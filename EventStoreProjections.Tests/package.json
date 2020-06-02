@@ -1,0 +1,19 @@
+{
+  "name": "event-store-projections.tests",
+  "version": "0.0.0",
+  "description": "EventStoreProjections.Tests",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "dependencies": {
+    "chai": "^4.2.0",
+    "event-store-projection-testing": "^2.0.1",
+    "mocha-isolation": "^0.1.5"
+  },
+  "scripts": {
+    "run": "node app.js",
+    "watch": "mocha --recursive -R min --watch",
+    "test": "mocha --require mocha-isolation --full-trace 'tests/**/*.js' --recursive"
+  }
+}

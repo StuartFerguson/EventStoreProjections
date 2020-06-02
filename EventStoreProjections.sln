@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "EventStoreProjections.Tests", "EventStoreProjections.Tests\EventStoreProjections.Tests.njsproj", "{0CDD29A1-4491-4025-8920-947FE0E0F01C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CDD29A1-4491-4025-8920-947FE0E0F01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CDD29A1-4491-4025-8920-947FE0E0F01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CDD29A1-4491-4025-8920-947FE0E0F01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CDD29A1-4491-4025-8920-947FE0E0F01C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FD59068B-48DE-4EBC-8292-C54F7B43A5BB}
+	EndGlobalSection
+EndGlobal
