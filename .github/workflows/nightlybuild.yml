@@ -4,50 +4,22 @@ on:
   schedule:
   - cron: "45 23 * * *"
 
+env:
+  NODE_VERSION: '12.x'                # set this to the node version to use
+
 jobs:
-  build:
-    name: "Nightly Build"
-    env:
-        ASPNETCORE_ENVIRONMENT: "Production"
-
+  nightlybuild:
+    name: Nightly Build
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - uses: actions/checkout@v2
+    
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1
       with:
-        dotnet-version: 3.1.100
-
-    - name: Restore Nuget Packages
-      run: dotnet restore EstateReporting.sln --source https://api.nuget.org/v3/index.json --source https://www.myget.org/F/transactionprocessing/api/v3/index.json
-
-    - name: Build Code
-      run: dotnet build EstateReporting.sln --configuration Release
-
+        node-version: ${{ env.NODE_VERSION }}
+    
     - name: Run Unit Tests
       run: |
-        echo "ASPNETCORE_ENVIRONMENT are > ${ASPNETCORE_ENVIRONMENT}"
-        dotnet test "EstateReporting.BusinessLogic.Tests\EstateReporting.BusinessLogic.Tests.csproj" /p:CollectCoverage=true /p:Exclude="[xunit*]*" /p:ExcludeByAttribute="Obsolete" /p:ExcludeByAttribute="GeneratedCodeAttribute" /p:ExcludeByAttribute="CompilerGeneratedAttribute" /p:ExcludeByAttribute="ExcludeFromCodeCoverageAttribute" /p:CoverletOutput="../lcov1.info" /maxcpucount:1 /p:CoverletOutputFormat="lcov"        
-        dotnet test "EstateReporting.Repository.Tests\EstateReporting.Repository.Tests.csproj" /p:CollectCoverage=true /p:Exclude="[xunit*]*" /p:ExcludeByAttribute="Obsolete" /p:ExcludeByAttribute="GeneratedCodeAttribute" /p:ExcludeByAttribute="CompilerGeneratedAttribute" /p:ExcludeByAttribute="ExcludeFromCodeCoverageAttribute" /p:CoverletOutput="../lcov2.info" /maxcpucount:1 /p:CoverletOutputFormat="lcov"        
-
-    - name: Setup Node.js for use with actions
-      uses: actions/setup-node@v1.1.0
-    
-    - name: Combine Coverage
-      run: |
-        npm i lcov-result-merger
-        ./node_modules/lcov-result-merger/bin/lcov-result-merger.js '*.info' 'lcov.info' 
-
-    - name: Upload Code Coverage
-      uses: coverallsapp/github-action@master
-      with:
-          github-token: ${{ secrets.github_token }}
-          path-to-lcov: lcov.info    
-
-    - name: Build Docker Image
-      run: docker build . --file EstateReporting/Dockerfile --tag estatereporting:latest
-
-    #- name: Run Integration Tests
-      #run: dotnet test "EstateManagement.IntegrationTests\EstateManagement.IntegrationTests.csproj"
+        npm install
+        npm run test
