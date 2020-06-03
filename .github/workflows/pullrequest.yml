@@ -9,7 +9,7 @@ env:
   NODE_VERSION: '12.x'                # set this to the node version to use
 
 jobs:
-  build-and-deploy:
+  build-and-test:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:

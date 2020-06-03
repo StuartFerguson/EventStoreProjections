@@ -1,8 +1,8 @@
 var fromStreams = fromStreams || require('../../node_modules/event-store-projection-testing').scope.fromStreams;
+var emit = emit || require('../../node_modules/event-store-projection-testing').scope.emit;
 
 class Merchant {
-    constructor(id, name)
-    {
+    constructor(id, name) {
         this.MerchantId = id;
         this.MerchantName = name;
         this.Balance = 0;
@@ -10,8 +10,7 @@ class Merchant {
         this.LastSaleDateTime = null;
     }
 
-    getMerchantId()
-    {
+    getMerchantId() {
         return this.MerchantId;
     }
 
@@ -31,17 +30,19 @@ class Merchant {
         return this.LastSaleDateTime;
     }
 
-    incrementBalanceFromDeposit(amount, dateTime)
-    {
+    incrementBalanceFromDeposit(amount, dateTime) {
         this.Balance += amount;
-        // TODO: protect against events coming in out of order
-        this.LastDepositDateTime = dateTime;
+        // protect against events coming in out of order
+        if (this.LastDepositDateTime === null || dateTime > this.LastDepositDateTime) {
+            this.LastDepositDateTime = dateTime;
+        }
     }
 
     decrementBalanceForSale(amount, dateTime) {
         this.Balance -= amount;
-        // TODO: protect against events coming in out of order
-        this.LastSaleDateTime = dateTime;
+        if (this.LastSaleDateTime === null || dateTime > this.LastSaleDateTime) {
+            this.LastSaleDateTime = dateTime;
+        }
     }
 }
 
@@ -62,9 +63,8 @@ var eventbus = {
     }
 }
 
-var merchantCreatedEventHandler = function(s, e)
-{
-    var merchantId = e.data.MerchantId;
+var merchantCreatedEventHandler = function (s, e) {
+    var merchantId = getMerchantIdFromEvent(e);
 
     if (s.merchants[merchantId] === undefined) {
         let merchant = new Merchant(merchantId, e.data.MerchantName);
@@ -72,36 +72,41 @@ var merchantCreatedEventHandler = function(s, e)
     }
 }
 
-var depositMadeEventHandler = function(s,e)
-{
-    var merchantId = e.data.MerchantId;
+var depositMadeEventHandler = function (s, e) {
+    var merchantId = getMerchantIdFromEvent(e);
     var merchant = s.merchants[merchantId];
 
-    merchant.incrementBalance(e.data.Amount, e.data.DepositDateTime);
+    merchant.incrementBalanceFromDeposit(e.data.Amount, e.data.DepositDateTime);
     var event = createBalanceUpdatedEvent(merchant);
-    
-    emit("MerchantBalanceHistory-" + merchantId.replace(/-/gi,""),
-            event.type,
-            event.data,
-            event.metadata);
+
+    emit("MerchantBalanceHistory-" + merchantId.replace(/-/gi, ""),
+        event.type,
+        event.data,
+        event.metadata);
 }
 
-var createBalanceUpdatedEvent = function(merchant)
-{
+var createBalanceUpdatedEvent = function (merchant) {
     return {
         type: 'EstateManagement.Merchant.DomainEvents.BalanceUpdatedEvent',
         data: {
             merchantId: merchant.getMerchantId(),
             balance: merchant.getBalance(),
             lastSaleDate: merchant.getLastSaleDateTime(),
-            lastDepositDate: merchant.LastDepositDateTime()
+            lastDepositDate: merchant.getLastDepositDateTime()
         },
         metadata: {}
     }
 }
 
+var getMerchantIdFromEvent = function (e) {
+    if (e.data.MerchantId !== undefined && e.data.MerchantId !== null)
+        return e.data.MerchantId;
+
+    return e.data.AggregateId;
+}
+
 fromStreams('$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
-            '$et-EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent')
+    '$et-EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent')
     .when({
         $init: function (s, e) {
             return {
@@ -109,7 +114,7 @@ fromStreams('$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
                 debug: []
             };
         },
-        
+
         $any: function (s, e) {
 
             if (e === null || e.data === null || e.data.IsJson === false)
