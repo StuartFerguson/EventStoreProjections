@@ -125,11 +125,13 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(data.balance).to.equal(depositAmount1);
         chai.expect(data.availableBalance).to.equal(depositAmount1);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime1);
+        chai.expect(data.lastSaleDate).to.be.null;
 
         var data = JSON.parse(emittedEvents[1].body);
         chai.expect(data.balance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(data.availableBalance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime2);
+        chai.expect(data.lastSaleDate).to.be.null;
     });
 
     it('Projection handles multiple merchant manual deposit event not in date order', function () {
@@ -189,6 +191,7 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(data.balance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(data.availableBalance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime1);
+        chai.expect(data.lastSaleDate).to.be.null;
     });
 
     it('Projection reduces available balance after transaction started message processed', function()
@@ -241,6 +244,18 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(merchant.Balance).to.equal(depositAmount);
         chai.expect(merchant.AvailableBalance).to.equal(depositAmount - transactionAmount);
         chai.expect(merchant.PendingBalanceUpdates[transactionId]).to.not.be.null;
+
+        // check emitted events
+        var emittedEvents = projection.emittedEvents;
+
+        chai.expect(emittedEvents).to.not.be.null;
+        chai.expect(emittedEvents.length).to.equal(2);
+
+        var data = JSON.parse(emittedEvents[1].body);
+        chai.expect(data.balance).to.equal(depositAmount);
+        chai.expect(data.availableBalance).to.equal(depositAmount - transactionAmount);
+        chai.expect(data.lastDepositDate).to.equal(depositDateTime);
+        chai.expect(data.lastSaleDate).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
     });
 
     it('Projection reduces balance after transaction completed message processed if transaction is successful', function () {
@@ -302,6 +317,18 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(merchant.Balance).to.equal(depositAmount - transactionAmount);
         chai.expect(merchant.AvailableBalance).to.equal(depositAmount - transactionAmount);
         chai.expect(merchant.PendingBalanceUpdates[transactionId]).to.be.undefined;
+
+        // check emitted events
+        var emittedEvents = projection.emittedEvents;
+
+        chai.expect(emittedEvents).to.not.be.null;
+        chai.expect(emittedEvents.length).to.equal(3);
+
+        var data = JSON.parse(emittedEvents[2].body);
+        chai.expect(data.balance).to.equal(depositAmount - transactionAmount);
+        chai.expect(data.availableBalance).to.equal(depositAmount - transactionAmount);
+        chai.expect(data.lastDepositDate).to.equal(depositDateTime);
+        chai.expect(data.lastSaleDate).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
     });
 
     it('Projection resets available balance after transaction completed message processed if transaction is not successful', function () {
