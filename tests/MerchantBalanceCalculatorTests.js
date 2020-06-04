@@ -61,6 +61,7 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(merchant).to.not.be.null;
         chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
         chai.expect(merchant.Balance).to.equal(manualDepositMadeEvent.data.Amount);
+        chai.expect(merchant.AvailableBalance).to.equal(manualDepositMadeEvent.data.Amount);
 
         // check emitted events
         var emittedEvents = projection.emittedEvents;
@@ -112,6 +113,7 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(merchant).to.not.be.null;
         chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
         chai.expect(merchant.Balance).to.equal(expectedBalance);
+        chai.expect(merchant.AvailableBalance).to.equal(expectedBalance);
 
         // check emitted events
         var emittedEvents = projection.emittedEvents;
@@ -121,10 +123,12 @@ describe('Merchant Balance Calculator Tests', function()
 
         var data = JSON.parse(emittedEvents[0].body);
         chai.expect(data.balance).to.equal(depositAmount1);
+        chai.expect(data.availableBalance).to.equal(depositAmount1);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime1);
 
         var data = JSON.parse(emittedEvents[1].body);
         chai.expect(data.balance).to.equal(depositAmount1 + depositAmount2);
+        chai.expect(data.availableBalance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime2);
     });
 
@@ -168,6 +172,7 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(merchant).to.not.be.null;
         chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
         chai.expect(merchant.Balance).to.equal(expectedBalance);
+        chai.expect(merchant.AvailableBalance).to.equal(expectedBalance);
 
         // check emitted events
         var emittedEvents = projection.emittedEvents;
@@ -177,10 +182,186 @@ describe('Merchant Balance Calculator Tests', function()
 
         var data = JSON.parse(emittedEvents[0].body);
         chai.expect(data.balance).to.equal(depositAmount1);
+        chai.expect(data.availableBalance).to.equal(depositAmount1);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime1);
 
         var data = JSON.parse(emittedEvents[1].body);
         chai.expect(data.balance).to.equal(depositAmount1 + depositAmount2);
+        chai.expect(data.availableBalance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(data.lastDepositDate).to.equal(depositDateTime1);
+    });
+
+    it('Projection reduces available balance after transaction started message processed', function()
+    {
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var depositDateTime = '2020-06-01T06:21:31.356Z';
+        var depositAmount = 5000.00;
+        var transactionId = 'cf80660e-88c1-434c-a063-92e9076eda1b';
+        var transactionAmount = 1000.00;
+        var transactionType = 'Sale';
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data);
+
+        var manualDepositMadeEvent = testData.getManualDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent',
+            manualDepositMadeEvent.eventType,
+            manualDepositMadeEvent.data);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.merchants).to.not.be.null;
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+        chai.expect(merchant).to.not.be.null;
+        chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(merchant.Balance).to.equal(depositAmount);
+        chai.expect(merchant.AvailableBalance).to.equal(depositAmount);
+
+        var transactionHasStartedEvent = testData.getTransactionHasStartedEvent(estateId,merchantId, transactionId, transactionAmount, transactionType);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent',
+            transactionHasStartedEvent.eventType,
+            transactionHasStartedEvent.data);
+
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+
+        chai.expect(merchant.Balance).to.equal(depositAmount);
+        chai.expect(merchant.AvailableBalance).to.equal(depositAmount - transactionAmount);
+        chai.expect(merchant.PendingBalanceUpdates[transactionId]).to.not.be.null;
+    });
+
+    it('Projection reduces balance after transaction completed message processed if transaction is successful', function () {
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var depositDateTime = '2020-06-01T06:21:31.356Z';
+        var depositAmount = 5000.00;
+        var transactionId = 'cf80660e-88c1-434c-a063-92e9076eda1b';
+        var transactionAmount = 1000.00;
+        var transactionType = 'Sale';
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data);
+
+        var manualDepositMadeEvent = testData.getManualDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent',
+            manualDepositMadeEvent.eventType,
+            manualDepositMadeEvent.data);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.merchants).to.not.be.null;
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+        chai.expect(merchant).to.not.be.null;
+        chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(merchant.Balance).to.equal(depositAmount);
+        chai.expect(merchant.AvailableBalance).to.equal(depositAmount);
+
+        var transactionHasStartedEvent = testData.getTransactionHasStartedEvent(estateId, merchantId, transactionId, transactionAmount, transactionType);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent',
+            transactionHasStartedEvent.eventType,
+            transactionHasStartedEvent.data);
+
+        var projectionState = projection.getState();
+
+        var transactionHasBeenCompletedEvent =
+            testData.getTransactionHasBeenCompletedEvent(estateId, merchantId, transactionId, true);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent',
+            transactionHasBeenCompletedEvent.eventType,
+            transactionHasBeenCompletedEvent.data);
+
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+
+        chai.expect(merchant.Balance).to.equal(depositAmount - transactionAmount);
+        chai.expect(merchant.AvailableBalance).to.equal(depositAmount - transactionAmount);
+        chai.expect(merchant.PendingBalanceUpdates[transactionId]).to.be.undefined;
+    });
+
+    it('Projection resets available balance after transaction completed message processed if transaction is not successful', function () {
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var depositDateTime = '2020-06-01T06:21:31.356Z';
+        var depositAmount = 5000.00;
+        var transactionId = 'cf80660e-88c1-434c-a063-92e9076eda1b';
+        var transactionAmount = 1000.00;
+        var transactionType = 'Sale';
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data);
+
+        var manualDepositMadeEvent = testData.getManualDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent',
+            manualDepositMadeEvent.eventType,
+            manualDepositMadeEvent.data);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.merchants).to.not.be.null;
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+        chai.expect(merchant).to.not.be.null;
+        chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(merchant.Balance).to.equal(depositAmount);
+        chai.expect(merchant.AvailableBalance).to.equal(depositAmount);
+
+        var transactionHasStartedEvent = testData.getTransactionHasStartedEvent(estateId, merchantId, transactionId, transactionAmount, transactionType);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent',
+            transactionHasStartedEvent.eventType,
+            transactionHasStartedEvent.data);
+
+        var projectionState = projection.getState();
+
+        var transactionHasBeenCompletedEvent =
+            testData.getTransactionHasBeenCompletedEvent(estateId, merchantId, transactionId, false);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent',
+            transactionHasBeenCompletedEvent.eventType,
+            transactionHasBeenCompletedEvent.data);
+
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+
+        chai.expect(merchant.Balance).to.equal(depositAmount);
+        chai.expect(merchant.AvailableBalance).to.equal(depositAmount);
+        chai.expect(merchant.PendingBalanceUpdates[transactionId]).to.be.undefined;
     });
 });
