@@ -133,6 +133,12 @@ var transactionHasStartedEventHandler = function(s, e)
     var merchant = s.merchants[merchantId];
 
     merchant.addPendingBalanceUpdate(e.data.TransactionAmount, e.data.TransactionId, e.data.TransactionDateTime);
+
+    var event = createBalanceUpdatedEvent(merchant);
+    emit("MerchantBalanceHistory-" + merchantId.replace(/-/gi, ""),
+        event.type,
+        event.data,
+        event.metadata);
 }
 
 var transactionHasCompletedEventHandler = function(s, e)
@@ -142,6 +148,12 @@ var transactionHasCompletedEventHandler = function(s, e)
     var merchant = s.merchants[merchantId];
 
     merchant.decrementBalanceForSale(e.data.TransactionId, e.data.IsAuthorised);
+    var event = createBalanceUpdatedEvent(merchant);
+
+    emit("MerchantBalanceHistory-" + merchantId.replace(/-/gi, ""),
+        event.type,
+        event.data,
+        event.metadata);
 }
 
 var createBalanceUpdatedEvent = function (merchant) {
