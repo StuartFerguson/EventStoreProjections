@@ -46,5 +46,54 @@ module.exports = {
                 "MerchantId": merchantId
             }
         }
+    },
+
+    getTransactionHasStartedEvent: function(estateId, merchantId, transactionId, transactionAmount, transactionType)
+    {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent, TransactionProcessor.Transaction.DomainEvents",
+                "EstateId": estateId,
+                "DeviceIdentifier": "ce11160bbd98480601",
+                "MerchantId": merchantId,
+                "TransactionDateTime": "2020-05-16T07:47:50.160628Z",
+                "TransactionId": transactionId,
+                "TransactionNumber": "1",
+                "TransactionType": transactionType,
+                "TransactionReference": "b62b046631dcab",
+                "AggregateId": transactionId,
+                "EventId": "c98179d1-0c4d-4b0d-a5a9-2469e02563bc",
+                "EventCreatedDateTime": "2020-05-16T07:47:50.2160246+00:00",
+                "TransactionAmount": transactionAmount
+            },
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }	
+        }
+    },
+
+    getTransactionHasBeenCompletedEvent: function(estateId, merchantId, transactionId, isAuthorised)
+    {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent, TransactionProcessor.Transaction.DomainEvents",
+                "EstateId": estateId,
+                "IsAuthorised": isAuthorised,
+                "MerchantId": merchantId,
+                "ResponseCode": "0000",
+                "ResponseMessage": "SUCCESS",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": "5d7aba66-390c-4044-9aae-a298c2b367be",
+                "EventCreatedDateTime": "2020-05-16T07:47:51.6617562+00:00"
+            },
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
+        }
     }
 };
