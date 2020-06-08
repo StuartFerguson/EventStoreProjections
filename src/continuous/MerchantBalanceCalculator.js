@@ -1,5 +1,5 @@
 var fromStreams = fromStreams || require('../../node_modules/event-store-projection-testing').scope.fromStreams;
-var partitionBy = partitionBy || require('../../node_modules/event-store-projection-testing').scope.partitionBy;
+var partitionBy = partitionBy !== null ? partitionBy : require('../../node_modules/event-store-projection-testing').scope.partitionBy;
 var emit = emit || require('../../node_modules/event-store-projection-testing').scope.emit;
 
 var incrementBalanceFromDeposit = function(s, merchantId, amount, dateTime) {
