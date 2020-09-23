@@ -118,5 +118,25 @@ module.exports = {
                 "EstateId": estateId
             }
         }
+    },
+
+    getMerchantFeeAddedToTransactionEvent: function (estateId, merchantId, calculatedValue, eventCreatedDateTime)
+    {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent, TransactionProcessor.Transaction.DomainEvents",
+                "CalculatedValue": calculatedValue,
+                "EstateId": estateId,
+                "FeeCalculationType": 0,
+                "FeeId": "cd858cbd-fafd-4f66-9eea-52c6ab1e5832",
+                "FeeValue": 0.5,
+                "MerchantId": merchantId,
+                "TransactionId": "44430c03-d11b-48d4-835c-61170288c466",
+                "AggregateId": "44430c03-d11b-48d4-835c-61170288c466",
+                "EventId": "57022d0a-e0ed-4bd8-abb0-f5320332c6e6",
+                "EventCreatedDateTime": eventCreatedDateTime
+            }					
+        }
     }
 };

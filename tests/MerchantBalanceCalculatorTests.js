@@ -391,4 +391,129 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(merchant.AvailableBalance).to.equal(depositAmount);
         chai.expect(merchant.PendingBalanceUpdates[transactionId]).to.be.undefined;
     });
+
+    it('Projection handles merchant fee event', function () {
+
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var eventCreatedDateTime = '2020-05-30T06:21:31.356Z';
+        var calculatedValue = 5.00;
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data);
+
+        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue, eventCreatedDateTime);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
+            merchantFeeAddedToTransactionEvent.eventType,
+            merchantFeeAddedToTransactionEvent.data);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.merchants).to.not.be.null;
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+        chai.expect(merchant).to.not.be.null;
+        chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(merchant.LastFeeProcessedDateTime).to.equal(merchantFeeAddedToTransactionEvent.data.EventCreatedDateTime);
+        chai.expect(merchant.Balance).to.equal(merchantFeeAddedToTransactionEvent.data.CalculatedValue);
+        chai.expect(merchant.AvailableBalance).to.equal(merchantFeeAddedToTransactionEvent.data.CalculatedValue);
+    });
+
+    it('Projection handles multiple merchant fee event', function () {
+
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var eventCreatedDateTime1 = '2020-05-30T06:21:31.356Z';
+        var calculatedValue1 = 5.00;
+
+        var eventCreatedDateTime2 = '2020-06-02T06:21:31.356Z';
+        var calculatedValue2 = 4.25;
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data);
+
+        var merchantFeeAddedToTransactionEvent1 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue1, eventCreatedDateTime1);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
+            merchantFeeAddedToTransactionEvent1.eventType,
+            merchantFeeAddedToTransactionEvent1.data);
+
+        var merchantFeeAddedToTransactionEvent2 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue2, eventCreatedDateTime2);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
+            merchantFeeAddedToTransactionEvent2.eventType,
+            merchantFeeAddedToTransactionEvent2.data);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.merchants).to.not.be.null;
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+        chai.expect(merchant).to.not.be.null;
+        chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(merchant.LastFeeProcessedDateTime).to.equal(merchantFeeAddedToTransactionEvent2.data.EventCreatedDateTime);
+        chai.expect(merchant.Balance).to.equal(merchantFeeAddedToTransactionEvent1.data.CalculatedValue + merchantFeeAddedToTransactionEvent2.data.CalculatedValue);
+        chai.expect(merchant.AvailableBalance).to.equal(merchantFeeAddedToTransactionEvent1.data.CalculatedValue + merchantFeeAddedToTransactionEvent2.data.CalculatedValue);
+    });
+
+    it('Projection handles multiple merchant fee event not in date order', function () {
+
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var eventCreatedDateTime1 = '2020-06-02T06:21:31.356Z';
+        var calculatedValue1 = 5.00;
+
+        var eventCreatedDateTime2 = '2020-05-30T06:21:31.356Z';
+        var calculatedValue2 = 4.25;
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            '$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data);
+
+        var merchantFeeAddedToTransactionEvent1 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue1, eventCreatedDateTime1);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
+            merchantFeeAddedToTransactionEvent1.eventType,
+            merchantFeeAddedToTransactionEvent1.data);
+
+        var merchantFeeAddedToTransactionEvent2 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue2, eventCreatedDateTime2);
+
+        projection.processEvent(
+            '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
+            merchantFeeAddedToTransactionEvent2.eventType,
+            merchantFeeAddedToTransactionEvent2.data);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.merchants).to.not.be.null;
+
+        var merchant = projectionState.merchants[merchantCreatedEvent.data.MerchantId];
+        chai.expect(merchant).to.not.be.null;
+        chai.expect(merchant.MerchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(merchant.LastFeeProcessedDateTime).to.equal(merchantFeeAddedToTransactionEvent1.data.EventCreatedDateTime);
+        chai.expect(merchant.Balance).to.equal(merchantFeeAddedToTransactionEvent1.data.CalculatedValue + merchantFeeAddedToTransactionEvent2.data.CalculatedValue);
+        chai.expect(merchant.AvailableBalance).to.equal(merchantFeeAddedToTransactionEvent1.data.CalculatedValue + merchantFeeAddedToTransactionEvent2.data.CalculatedValue);
+    });
 });

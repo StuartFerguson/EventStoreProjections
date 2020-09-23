@@ -48,6 +48,15 @@ var decrementBalanceForSale = function(s, merchantId, transactionId, isAuthorise
     }
 }
 
+var incrementBalanceFromMerchantFee = function (s, merchantId, amount, dateTime) {
+    var merchant = s.merchants[merchantId];
+    merchant.Balance += amount;
+    merchant.AvailableBalance += amount;
+    // protect against events coming in out of order
+    if (merchant.LastFeeProcessedDateTime === null || dateTime > merchant.LastFeeProcessedDateTime) {
+        merchant.LastFeeProcessedDateTime = dateTime;
+    }
+}
 
 var eventbus = {
     dispatch: function (s, e) {
@@ -71,6 +80,11 @@ var eventbus = {
             transactionHasCompletedEventHandler(s, e);
             return;
         }
+
+        if (e.eventType === 'TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent') {
+            merchantFeeAddedToTransactionEventHandler(s, e);
+            return;
+        }
     }
 }
 
@@ -86,6 +100,7 @@ var merchantCreatedEventHandler = function (s, e)
             Balance: 0,
             LastDepositDateTime: null,
             LastSaleDateTime: null,
+            LastFeeProcessedDateTime: null,
             PendingBalanceUpdates: []
         };
     }
@@ -93,7 +108,6 @@ var merchantCreatedEventHandler = function (s, e)
 
 var depositMadeEventHandler = function (s, e) {
     var merchantId = e.data.MerchantId;
-    var merchant = s.merchants[merchantId];
 
     incrementBalanceFromDeposit(s, merchantId,e.data.Amount, e.data.DepositDateTime);
 }
@@ -102,7 +116,6 @@ var transactionHasStartedEventHandler = function(s, e)
 {
     // Add this to a pending balance update list
     var merchantId = e.data.MerchantId;
-    var merchant = s.merchants[merchantId];
 
     var amount = e.data.TransactionAmount;
     if (amount === undefined)
@@ -117,15 +130,23 @@ var transactionHasCompletedEventHandler = function(s, e)
 {
     // Add this to a pending balance update list
     var merchantId = e.data.MerchantId;
-    var merchant = s.merchants[merchantId];
 
     decrementBalanceForSale(s, merchantId, e.data.TransactionId, e.data.IsAuthorised);
+}
+
+var merchantFeeAddedToTransactionEventHandler = function(s, e)
+{
+    var merchantId = e.data.MerchantId;
+
+    // increment the balance now
+    incrementBalanceFromMerchantFee(s, merchantId, e.data.CalculatedValue, e.data.EventCreatedDateTime);
 }
 
 fromStreams('$et-EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent',
     '$et-EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent',
     '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent',
-    '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent')
+    '$et-TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent',
+    '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent')
     .partitionBy(function(e)
     {
         return "MerchantBalanceHistory-" + e.data.MerchantId.replace(/-/gi, "");
