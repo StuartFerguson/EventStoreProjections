@@ -1,3 +1,11 @@
+function generateEventId() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
+        function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+};
+
 module.exports = {
     getMerchantCreatedEvent: function (estateId, merchantId, merchantName)
     {
@@ -11,8 +19,107 @@ module.exports = {
                 "MerchantId": merchantId,
                 "MerchantName": merchantName,
                 "AggregateId": merchantId,
-                "EventId": "63486afb-3fcc-4dff-8195-229ea6e838cf",
+                "EventId": generateEventId(),
                 "EventCreatedDateTime": "2020-05-26T16:01:47.0310913+00:00"
+            },
+            metadata: {
+                "$type":
+                    "<>f__AnonymousType0`2[[System.Guid, System.Private.CoreLib],[System.Guid, System.Private.CoreLib]], EstateManagement.MerchantAggregate",
+                "EstateId": estateId,
+                "MerchantId": merchantId
+            }
+        };
+    },
+
+    getAddressAddedEvent: function (estateId, merchantId) {
+        return {
+            eventType: 'EstateManagement.Merchant.DomainEvents.AddressAddedEvent',
+            data: {
+                "$type": "EstateManagement.Merchant.DomainEvents.AddressAddedEvent, EstateManagement.Merchant.DomainEvents",
+                "AddressId": "7ccd0921-41b8-4780-b347-bb45348dcc67",
+                "AddressLine1": "test address line 1",
+                "AddressLine2": null,
+                "AddressLine3": null,
+                "AddressLine4": null,
+                "Country": "United Kingdom",
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "PostalCode": null,
+                "Region": "Region",
+                "Town": "MyTown",
+                "AggregateId": merchantId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-10T18:11:38.2197973+00:00"
+            },
+            metadata: {
+                "$type":
+                    "<>f__AnonymousType0`2[[System.Guid, System.Private.CoreLib],[System.Guid, System.Private.CoreLib]], EstateManagement.MerchantAggregate",
+                "EstateId": estateId,
+                "MerchantId": merchantId
+            }
+        };
+    },
+
+    getContactAddedEvent: function (estateId, merchantId) {
+        return {
+            eventType: 'EstateManagement.Merchant.DomainEvents.ContactAddedEvent',
+            data: {
+                "$type": "EstateManagement.Merchant.DomainEvents.ContactAddedEvent, EstateManagement.Merchant.DomainEvents",
+                "ContactEmailAddress": "testcontact@emulatormerchant.co.uk",
+                "ContactId": "4fe7c5d6-b83e-4199-bbc4-60166652a889",
+                "ContactName": "Test Contact",
+                "ContactPhoneNumber": null,
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "AggregateId": merchantId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-10T18:11:38.2225649+00:00"
+            },
+            metadata: {
+                "$type":
+                    "<>f__AnonymousType0`2[[System.Guid, System.Private.CoreLib],[System.Guid, System.Private.CoreLib]], EstateManagement.MerchantAggregate",
+                "EstateId": estateId,
+                "MerchantId": merchantId
+            }
+        };
+    },
+
+    getOperatorAssignedToMerchantEvent: function (estateId, merchantId, operatorId, operatorName,merchantNumber, terminalNumber) {
+        return {
+            eventType: 'EstateManagement.Merchant.DomainEvents.OperatorAssignedToMerchantEvent',
+            data: {
+                "$type": "EstateManagement.Merchant.DomainEvents.OperatorAssignedToMerchantEvent, EstateManagement.Merchant.DomainEvents",
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "MerchantNumber": merchantNumber,
+                "Name": operatorName,
+                "OperatorId": "410c55fd-9eef-462d-9267-3649c7dedbff",
+                "TerminalNumber": terminalNumber,
+                "AggregateId": merchantId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-10T18:16:13.3097526+00:00"
+            },
+            metadata: {
+                "$type":
+                    "<>f__AnonymousType0`2[[System.Guid, System.Private.CoreLib],[System.Guid, System.Private.CoreLib]], EstateManagement.MerchantAggregate",
+                "EstateId": estateId,
+                "MerchantId": merchantId
+            }
+        };
+    },
+
+    getSecurityUserAddedEvent: function (estateId, merchantId, securityUserId, emailAddress) {
+        return {
+            eventType: 'EstateManagement.Merchant.DomainEvents.SecurityUserAddedEvent',
+            data: {
+                "$type": "EstateManagement.Merchant.DomainEvents.SecurityUserAddedEvent, EstateManagement.Merchant.DomainEvents",
+                "EmailAddress": emailAddress,
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "SecurityUserId": securityUserId,
+                "AggregateId": merchantId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-10T18:17:16.3060575+00:00"
             },
             metadata: {
                 "$type":
@@ -34,8 +141,32 @@ module.exports = {
                 "DepositDateTime": depositDateTime,
                 "Amount": depositAmount,
                 "AggregateId": merchantId,
-                "EventId": "2796cfeb-7800-4091-b57c-e07f93bde7ec",
+                "EventId": generateEventId(),
                 "EventCreatedDateTime": "2020-05-30T07:25:16.1932531+01:00"
+            },
+            metadata: {
+                "$type":
+                    "<>f__AnonymousType0`2[[System.Guid, System.Private.CoreLib],[System.Guid, System.Private.CoreLib]], EstateManagement.MerchantAggregate",
+                "EstateId": estateId,
+                "MerchantId": merchantId
+            }
+        }
+    },
+
+    getDeviceAddedToMerchantEvent: function (estateId, merchantId, deviceId, deviceIdentifier)
+    {
+        return {
+            eventType: 'EstateManagement.Merchant.DomainEvents.DeviceAddedToMerchantEvent',
+            data: {
+                "$type":
+                    "EstateManagement.Merchant.DomainEvents.DeviceAddedToMerchantEvent, EstateManagement.Merchant.DomainEvents",
+                "DeviceId": deviceId,
+                "DeviceIdentifier": deviceIdentifier,
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "AggregateId": merchantId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-10T18:17:52.2591669+00:00"
             },
             metadata: {
                 "$type":
@@ -59,7 +190,7 @@ module.exports = {
                 "DepositDateTime": depositDateTime,
                 "Amount": depositAmount,
                 "AggregateId": merchantId,
-                "EventId": "2796cfeb-7800-4091-b57c-e07f93bde7ec",
+                "EventId": generateEventId(),
                 "EventCreatedDateTime": "2020-05-30T07:25:16.1932531+01:00"
             },
             metadata: {
@@ -86,7 +217,7 @@ module.exports = {
                 "TransactionType": transactionType,
                 "TransactionReference": "b62b046631dcab",
                 "AggregateId": transactionId,
-                "EventId": "c98179d1-0c4d-4b0d-a5a9-2469e02563bc",
+                "EventId": generateEventId(),
                 "EventCreatedDateTime": "2020-05-16T07:47:50.2160246+00:00",
                 "TransactionAmount": transactionAmount
             },
@@ -94,6 +225,147 @@ module.exports = {
                 "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
                 "EstateId": estateId
             }	
+        }
+    },
+
+    getProductDetailsAddedToTransactionEvent: function(estateId, merchantId, transactionId, contractId, productId)
+    {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.ProductDetailsAddedToTransactionEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.ProductDetailsAddedToTransactionEvent, TransactionProcessor.Transaction.DomainEvents",
+                "ContractId": contractId,
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "ProductId": productId,
+                "TransactionId": transactionId,
+                "EventId": generateEventId(),
+                "AggregateId": transactionId,
+                "EventCreatedDateTime": "2020-11-11T16:29:51.6635007+00:00"
+            }	,
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
+        }
+    },
+
+    getAdditionalRequestDataRecordedEvent: function (estateId, merchantId, transactionId, transactionAmount, customerAccountNumber) {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.AdditionalRequestDataRecordedEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.AdditionalRequestDataRecordedEvent, TransactionProcessor.Transaction.DomainEvents",
+                "AdditionalTransactionRequestMetadata": {
+                    "$type": "System.Collections.Generic.Dictionary`2[[System.String, System.Private.CoreLib],[System.String, System.Private.CoreLib]], System.Private.CoreLib",
+                    "Amount": transactionAmount.toString(),
+                    "CustomerAccountNumber": customerAccountNumber
+                },
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "OperatorIdentifier": "Safaricom",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-11T16:29:51.714202+00:00"
+            },
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
+        }
+    },
+
+    getTransactionHasBeenLocallyAuthorisedEvent: function(estateId, merchantId, transactionId)
+    {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenLocallyAuthorisedEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenLocallyAuthorisedEvent, TransactionProcessor.Transaction.DomainEvents",
+                "AuthorisationCode": "ABCD1234",
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "ResponseCode": "0000",
+                "ResponseMessage": "SUCCESS",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-11T11:16:54.2243331+00:00"
+            },
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
+        }
+    },
+
+    getTransactionHasBeenLocallyDeclinedEvent: function (estateId, merchantId, transactionId) {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenLocallyDeclinedEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenLocallyDeclinedEvent, TransactionProcessor.Transaction.DomainEvents",
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "ResponseCode": "1009",
+                "ResponseMessage": "Merchant [Emulator Merchant] does not have enough credit available [0.0] to perform transaction amount [100.00]",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-05-16T07:47:51.6617562+00:00"
+            },
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
+        }
+    },
+
+    getTransactionAuthorisedByOperatorEvent: function (estateId, merchantId, transactionId) {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionAuthorisedByOperatorEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.TransactionAuthorisedByOperatorEvent, TransactionProcessor.Transaction.DomainEvents",
+                "AuthorisationCode": "ABCD1234",
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "OperatorIdentifier": "Safaricom",
+                "OperatorResponseCode": "200",
+                "OperatorResponseMessage": "Topup Successful",
+                "OperatorTransactionId": null,
+                "ResponseCode": "0000",
+                "ResponseMessage": "SUCCESS",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-11T11:16:55.7048259+00:00"
+            },
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
+        }
+    },
+
+    getTransactionDeclinedByOperatorEvent: function (estateId, merchantId, transactionId) {
+        return {
+            eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionDeclinedByOperatorEvent',
+            data: {
+                "$type": "TransactionProcessor.Transaction.DomainEvents.TransactionDeclinedByOperatorEvent, TransactionProcessor.Transaction.DomainEvents",
+                "EstateId": estateId,
+                "MerchantId": merchantId,
+                "OperatorIdentifier": "Safaricom",
+                "OperatorResponseCode": "401",
+                "OperatorResponseMessage": "Amount Greater than 25000",
+                "ResponseCode": "1008",
+                "ResponseMessage": "DECLINED BY OPERATOR",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": generateEventId(),
+                "EventCreatedDateTime": "2020-11-11T11:16:58.017584+00:00"
+            }	,
+            metadata: {
+                "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
+                "EstateId": estateId
+            }
         }
     },
 
@@ -110,7 +382,7 @@ module.exports = {
                 "ResponseMessage": "SUCCESS",
                 "TransactionId": transactionId,
                 "AggregateId": transactionId,
-                "EventId": "5d7aba66-390c-4044-9aae-a298c2b367be",
+                "EventId": generateEventId(),
                 "EventCreatedDateTime": "2020-05-16T07:47:51.6617562+00:00"
             },
             metadata: {
@@ -119,8 +391,8 @@ module.exports = {
             }
         }
     },
-
-    getMerchantFeeAddedToTransactionEvent: function (estateId, merchantId, calculatedValue, eventCreatedDateTime)
+    
+    getMerchantFeeAddedToTransactionEvent: function (estateId, merchantId, transactionId, calculatedValue, eventCreatedDateTime)
     {
         return {
             eventType: 'TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
@@ -132,9 +404,9 @@ module.exports = {
                 "FeeId": "cd858cbd-fafd-4f66-9eea-52c6ab1e5832",
                 "FeeValue": 0.5,
                 "MerchantId": merchantId,
-                "TransactionId": "44430c03-d11b-48d4-835c-61170288c466",
-                "AggregateId": "44430c03-d11b-48d4-835c-61170288c466",
-                "EventId": "57022d0a-e0ed-4bd8-abb0-f5320332c6e6",
+                "TransactionId": transactionId,
+                "AggregateId": transactionId,
+                "EventId": generateEventId(),
                 "EventCreatedDateTime": eventCreatedDateTime
             }					
         }

@@ -399,6 +399,7 @@ describe('Merchant Balance Calculator Tests', function()
         var merchantName = 'Test Merchant 1';
         var eventCreatedDateTime = '2020-05-30T06:21:31.356Z';
         var calculatedValue = 5.00;
+        var transactionId = '6be48c04-a00e-4985-a50c-e27461ca47e2';
 
         var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
 
@@ -407,7 +408,7 @@ describe('Merchant Balance Calculator Tests', function()
             merchantCreatedEvent.eventType,
             merchantCreatedEvent.data);
 
-        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue, eventCreatedDateTime);
+        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, transactionId, calculatedValue, eventCreatedDateTime);
 
         projection.processEvent(
             '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
@@ -434,9 +435,11 @@ describe('Merchant Balance Calculator Tests', function()
         var merchantName = 'Test Merchant 1';
         var eventCreatedDateTime1 = '2020-05-30T06:21:31.356Z';
         var calculatedValue1 = 5.00;
+        var transactionId1 = '1af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
 
         var eventCreatedDateTime2 = '2020-06-02T06:21:31.356Z';
         var calculatedValue2 = 4.25;
+        var transactionId2 = '3af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
 
         var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
 
@@ -445,14 +448,14 @@ describe('Merchant Balance Calculator Tests', function()
             merchantCreatedEvent.eventType,
             merchantCreatedEvent.data);
 
-        var merchantFeeAddedToTransactionEvent1 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue1, eventCreatedDateTime1);
+        var merchantFeeAddedToTransactionEvent1 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, transactionId1, calculatedValue1, eventCreatedDateTime1);
 
         projection.processEvent(
             '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
             merchantFeeAddedToTransactionEvent1.eventType,
             merchantFeeAddedToTransactionEvent1.data);
 
-        var merchantFeeAddedToTransactionEvent2 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue2, eventCreatedDateTime2);
+        var merchantFeeAddedToTransactionEvent2 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, transactionId2, calculatedValue2, eventCreatedDateTime2);
 
         projection.processEvent(
             '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
@@ -479,9 +482,11 @@ describe('Merchant Balance Calculator Tests', function()
         var merchantName = 'Test Merchant 1';
         var eventCreatedDateTime1 = '2020-06-02T06:21:31.356Z';
         var calculatedValue1 = 5.00;
+        var transactionId1 = '1af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
 
         var eventCreatedDateTime2 = '2020-05-30T06:21:31.356Z';
         var calculatedValue2 = 4.25;
+        var transactionId2 = '3af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
 
         var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
 
@@ -490,14 +495,14 @@ describe('Merchant Balance Calculator Tests', function()
             merchantCreatedEvent.eventType,
             merchantCreatedEvent.data);
 
-        var merchantFeeAddedToTransactionEvent1 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue1, eventCreatedDateTime1);
+        var merchantFeeAddedToTransactionEvent1 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, transactionId1, calculatedValue1, eventCreatedDateTime1);
 
         projection.processEvent(
             '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',
             merchantFeeAddedToTransactionEvent1.eventType,
             merchantFeeAddedToTransactionEvent1.data);
 
-        var merchantFeeAddedToTransactionEvent2 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, calculatedValue2, eventCreatedDateTime2);
+        var merchantFeeAddedToTransactionEvent2 = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, transactionId2, calculatedValue2, eventCreatedDateTime2);
 
         projection.processEvent(
             '$et-TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent',

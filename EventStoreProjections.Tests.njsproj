@@ -35,7 +35,13 @@
     <Content Include="app.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="src\continuous\MerchantAggregator.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\continuous\MerchantBalanceCalculator.js" />
+    <Content Include="tests\MerchantAggregatorTests.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tests\MerchantBalanceCalculatorTests.js">
       <SubType>Code</SubType>
     </Content>
