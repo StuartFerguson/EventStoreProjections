@@ -28,7 +28,7 @@ fromAll()
                 s.merchantId = merchantId;
                 var streamName = "MerchantArchive-" + merchantId.replace(/-/gi, "");
                 s.streamName = streamName;
-                linkTo(streamName, e.eventType, e.data);
+                linkTo(streamName, e, e.metadata);
             }
         }
     });
