@@ -74,13 +74,6 @@ describe('Merchant Aggregator Tests', function()
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(7);
-        chai.expect(events[0].metadata.EventId).to.equal(merchantCreatedEvent.data.EventId);
-        chai.expect(events[1].metadata.EventId).to.equal(addressAddedEvent.data.EventId);
-        chai.expect(events[2].metadata.EventId).to.equal(contactAddedEvent.data.EventId);
-        chai.expect(events[3].metadata.EventId).to.equal(operatorAssignedToMerchantEvent.data.EventId);
-        chai.expect(events[4].metadata.EventId).to.equal(securityUserAddedEvent.data.EventId);
-        chai.expect(events[5].metadata.EventId).to.equal(deviceAddedToMerchantEvent.data.EventId);
-        chai.expect(events[6].metadata.EventId).to.equal(manualDepositMadeEvent.data.EventId);
     });
 
     it('Projection Can Handle Transaction Events', function()
@@ -166,14 +159,5 @@ describe('Merchant Aggregator Tests', function()
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(9);
-        chai.expect(events[0].metadata.EventId).to.equal(transactionHasStartedEvent.data.EventId);
-        chai.expect(events[1].metadata.EventId).to.equal(productDetailsAddedToTransactionEvent.data.EventId);
-        chai.expect(events[2].metadata.EventId).to.equal(additionalRequestDataRecordedEvent.data.EventId);
-        chai.expect(events[3].metadata.EventId).to.equal(transactionHasBeenLocallyAuthorisedEvent.data.EventId);
-        chai.expect(events[4].metadata.EventId).to.equal(transactionHasBeenLocallyDeclinedEvent.data.EventId);
-        chai.expect(events[5].metadata.EventId).to.equal(transactionAuthorisedByOperatorEvent.data.EventId);
-        chai.expect(events[6].metadata.EventId).to.equal(transactionDeclinedByOperatorEvent.data.EventId);
-        chai.expect(events[7].metadata.EventId).to.equal(transactionHasBeenCompletedEvent.data.EventId);
-        chai.expect(events[8].metadata.EventId).to.equal(merchantFeeAddedToTransactionEvent.data.EventId);
     });
 });
