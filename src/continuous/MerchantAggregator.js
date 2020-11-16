@@ -17,6 +17,9 @@ isValidEvent = function (e) {
 };
 
 getMerchantId = function (e) {
+    if (e.data.MerchantId === undefined) {
+        return null;
+    }
     return e.data.MerchantId;
 };
 
@@ -25,10 +28,12 @@ fromAll()
         $any: function (s, e) {
             if (isValidEvent(e)) {
                 var merchantId = getMerchantId(e);
-                s.merchantId = merchantId;
-                var streamName = "MerchantArchive-" + merchantId.replace(/-/gi, "");
-                s.streamName = streamName;
-                linkTo(streamName, e, e.metadata);
+                if (merchantId !== null) {
+                    s.merchantId = merchantId;
+                    var streamName = "MerchantArchive-" + merchantId.replace(/-/gi, "");
+                    s.streamName = streamName;
+                    linkTo(streamName, e, e.metadata);
+                }
             }
         }
     });
