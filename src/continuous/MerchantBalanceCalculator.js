@@ -137,13 +137,14 @@ var merchantCreatedEventHandler = function (s, e) {
 var emitBalanceChangedEvent = function (s, changeAmount, dateTime, reference) {
     var balanceChangedEvent = {
         $type: getEventTypeName(),
+        "aggregateId": s.merchantId,
         "merchantId": s.merchantId,
         "estateId": s.estateId,
         "availableBalance": s.availableBalance,
         "balance": s.balance,
         "changeAmount": changeAmount,
         "eventId": generateEventId(),
-        "eventTimestamp": dateTime,
+        "eventCreatedDateTime": dateTime,
         "reference": reference
     }
 
