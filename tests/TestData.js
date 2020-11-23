@@ -369,7 +369,7 @@ module.exports = {
         }
     },
 
-    getTransactionHasBeenCompletedEvent: function(estateId, merchantId, transactionId, isAuthorised)
+    getTransactionHasBeenCompletedEvent: function (estateId, merchantId, transactionId, isAuthorised, amount)
     {
         return {
             eventType: 'TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent',
@@ -383,7 +383,9 @@ module.exports = {
                 "TransactionId": transactionId,
                 "AggregateId": transactionId,
                 "EventId": generateEventId(),
-                "EventCreatedDateTime": "2020-05-16T07:47:51.6617562+00:00"
+                "EventCreatedDateTime": "2020-05-16T07:47:51.6617562+00:00",
+                "TransactionAmount": amount,
+                "TransactionId": transactionId
             },
             metadata: {
                 "$type": "<>f__AnonymousType0`1[[System.Guid, System.Private.CoreLib]], TransactionProcessor.TransactionAggregate",
