@@ -5,6 +5,21 @@ var emit = emit || require('../../node_modules/event-store-projection-testing').
 fromCategory('MerchantArchive')
     .foreachStream()
     .when({
+        $init: function()
+        {
+            return {
+                availableBalance: 0,
+                balance: 0,
+                lastDepositDateTime: null,
+                lastSaleDateTime: null,
+                lastFeeProcessedDateTime: null,
+                debug: [],
+                totalDeposits: 0,
+                totalAuthorisedSales: 0,
+                totalDeclinedSales: 0,
+                totalFees: 0
+            }
+        },
         $any: function (s, e) {
 
             if (e === null || e.data === null || e.data.IsJson === false)
@@ -101,12 +116,12 @@ var decrementAvailableBalanceFromTransactionStarted = function (s, amount, dateT
     }
 };
 
-var decrementBalanceFromAuthorisedTransaction = function (s, amount, dateTime) {
+var decrementBalanceFromAuthorisedTransaction = function (s, amount) {
     s.balance = subtractTwoNumbers(s.balance, amount);
     s.totalAuthorisedSales = addTwoNumbers(s.totalAuthorisedSales, amount);
 };
 
-var incrementAvailableBalanceFromDeclinedTransaction = function (s, amount, dateTime) {
+var incrementAvailableBalanceFromDeclinedTransaction = function (s, amount) {
     s.availableBalance = addTwoNumbers(s.availableBalance, amount);
     s.totalDeclinedSales = addTwoNumbers(s.totalDeclinedSales, amount);
 };
@@ -117,17 +132,6 @@ var merchantCreatedEventHandler = function (s, e) {
     s.estateId = e.data.EstateId;
     s.merchantId = e.data.MerchantId;
     s.merchantName = e.data.MerchantName;
-    s.availableBalance = 0;
-    s.balance = 0;
-    s.lastDepositDateTime = null;
-    s.lastSaleDateTime = null;
-    s.lastFeeProcessedDateTime = null;
-    s.debug = [],
-        s.totalDeposits = 0;
-    s.totalAuthorisedSales = 0;
-    s.totalDeclinedSales = 0;
-    s.totalFees = 0;
-    s.startedEvents = [];
 };
 
 var emitBalanceChangedEvent = function (s, changeAmount, dateTime, reference) {
@@ -149,6 +153,16 @@ var emitBalanceChangedEvent = function (s, changeAmount, dateTime, reference) {
 };
 
 var depositMadeEventHandler = function (s, e) {
+
+    // Check if we have got a merchant id already set
+    if (s.merchantId === undefined)
+    {
+        // We have obviously not got a created event yet but we must process this event,
+        // so fill in what we can here
+        s.estateId = e.data.EstateId;
+        s.merchantId = e.data.MerchantId;
+    }
+
     incrementBalanceFromDeposit(s, e.data.Amount, e.data.DepositDateTime);
 
     // emit an balance changed event here
@@ -156,6 +170,15 @@ var depositMadeEventHandler = function (s, e) {
 };
 
 var transactionHasStartedEventHandler = function (s, e) {
+
+    // Check if we have got a merchant id already set
+    if (s.merchantId === undefined) {
+        // We have obviously not got a created event yet but we must process this event,
+        // so fill in what we can here
+        e.estateId = e.data.EstateId;
+        s.merchantId = e.data.MerchantId;
+    }
+
     var amount = e.data.TransactionAmount;
     if (amount === undefined) {
         amount = 0;
@@ -168,31 +191,25 @@ var transactionHasStartedEventHandler = function (s, e) {
         // emit an balance changed event here
         emitBalanceChangedEvent(s, amount, e.data.TransactionDateTime, "Transaction Started");
     }
-
-    s.startedEvents.push({
-        transactionId: e.data.TransactionId,
-        dateTime: e.data.TransactionDateTime
-    });
 };
 
 var transactionHasCompletedEventHandler = function (s, e) {
+
+    // Check if we have got a merchant id already set
+    if (s.merchantId === undefined) {
+        // We have obviously not got a created event yet but we must process this event,
+        // so fill in what we can here
+        e.estateId = e.data.EstateId;
+        s.merchantId = e.data.MerchantId;
+    }
+
     var amount = e.data.TransactionAmount;
     if (amount === undefined) {
         amount = 0;
     }
 
-    // find the started event
-    const index = s.startedEvents.findIndex((element, index) => {
-        if (element.transactionId === e.data.transactionId) {
-            return true;
-        }
-    });
-
-    var startedEvents = s.startedEvents.filter(se => se.transactionId === e.data.TransactionId);
-    var startedEvent = startedEvents[0];
-    var startedTime = new Date(Date.parse(startedEvent.dateTime));
-
-    var completedTime = new Date(startedTime.getFullYear(), startedTime.getMonth(), startedTime.getDate(), startedTime.getHours(), startedTime.getMinutes(), startedTime.getSeconds() + 2);
+    var transactionDateTime = new Date(Date.parse(e.data.TransactionDateTime));
+    var completedTime = new Date(transactionDateTime.getFullYear(), transactionDateTime.getMonth(), transactionDateTime.getDate(), transactionDateTime.getHours(), transactionDateTime.getMinutes(), transactionDateTime.getSeconds() + 2);
 
     if (e.data.IsAuthorised) {
         decrementBalanceFromAuthorisedTransaction(s, amount, completedTime);
@@ -206,12 +223,18 @@ var transactionHasCompletedEventHandler = function (s, e) {
     {
         emitBalanceChangedEvent(s, amount, completedTime, "Transaction Completed");
     }
-
-    s.startedEvents.splice(index);
-    //console.log(s.startedEvents);
 };
 
 var merchantFeeAddedToTransactionEventHandler = function (s, e) {
+
+    // Check if we have got a merchant id already set
+    if (s.merchantId === undefined) {
+        // We have obviously not got a created event yet but we must process this event,
+        // so fill in what we can here
+        e.estateId = e.data.EstateId;
+        s.merchantId = e.data.MerchantId;
+    }
+
     // increment the balance now
     incrementBalanceFromMerchantFee(s, e.data.CalculatedValue, e.data.EventCreatedDateTime);
 
