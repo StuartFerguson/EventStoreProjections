@@ -208,7 +208,7 @@ var transactionHasCompletedEventHandler = function (s, e) {
         amount = 0;
     }
 
-    var transactionDateTime = new Date(Date.parse(e.data.TransactionDateTime));
+    var transactionDateTime = new Date(Date.parse(e.data.CompletedDateTime));
     var completedTime = new Date(transactionDateTime.getFullYear(), transactionDateTime.getMonth(), transactionDateTime.getDate(), transactionDateTime.getHours(), transactionDateTime.getMinutes(), transactionDateTime.getSeconds() + 2);
 
     if (e.data.IsAuthorised) {

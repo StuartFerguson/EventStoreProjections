@@ -383,8 +383,8 @@ module.exports = {
                 "TransactionId": transactionId,
                 "AggregateId": transactionId,
                 "EventId": generateEventId(),
-                "TransactionDateTime": "2020-05-16T07:47:51.6617562+00:00",
                 "EventCreatedDateTime": "2020-05-16T07:47:51.6617562+00:00",
+                "CompletedDateTime": "2020-05-16T07:47:51.6617562+00:00",
                 "TransactionAmount": amount,
                 "TransactionId": transactionId
             },
