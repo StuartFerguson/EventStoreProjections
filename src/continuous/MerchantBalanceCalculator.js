@@ -134,16 +134,16 @@ var merchantCreatedEventHandler = function (s, e) {
     s.merchantName = e.data.MerchantName;
 };
 
-var emitBalanceChangedEvent = function (s, changeAmount, dateTime, reference) {
+var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, dateTime, reference) {
     var balanceChangedEvent = {
         $type: getEventTypeName(),
-        "aggregateId": s.merchantId,
+        "aggregateId": aggregateId,
         "merchantId": s.merchantId,
         "estateId": s.estateId,
         "availableBalance": s.availableBalance,
         "balance": s.balance,
         "changeAmount": changeAmount,
-        "eventId": generateEventId(),
+        "eventId": eventId,
         "eventCreatedDateTime": dateTime,
         "reference": reference
     }
@@ -166,7 +166,7 @@ var depositMadeEventHandler = function (s, e) {
     incrementBalanceFromDeposit(s, e.data.Amount, e.data.DepositDateTime);
 
     // emit an balance changed event here
-    emitBalanceChangedEvent(s, e.data.Amount, e.data.DepositDateTime, "Merchant Deposit");
+    emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.Amount, e.data.DepositDateTime, "Merchant Deposit");
 };
 
 var transactionHasStartedEventHandler = function (s, e) {
@@ -189,7 +189,7 @@ var transactionHasStartedEventHandler = function (s, e) {
     if (amount > 0)
     {
         // emit an balance changed event here
-        emitBalanceChangedEvent(s, amount, e.data.TransactionDateTime, "Transaction Started");
+        emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, amount, e.data.TransactionDateTime, "Transaction Started");
     }
 };
 
@@ -221,7 +221,7 @@ var transactionHasCompletedEventHandler = function (s, e) {
     // emit an balance changed event here
     if (amount > 0)
     {
-        emitBalanceChangedEvent(s, amount, completedTime, "Transaction Completed");
+        emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, amount, completedTime, "Transaction Completed");
     }
 };
 
@@ -239,6 +239,6 @@ var merchantFeeAddedToTransactionEventHandler = function (s, e) {
     incrementBalanceFromMerchantFee(s, e.data.CalculatedValue, e.data.EventCreatedDateTime);
 
     // emit an balance changed event here
-    emitBalanceChangedEvent(s, e.data.CalculatedValue, e.data.EventCreatedDateTime, "Transaction Fee Processed");
+    emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.CalculatedValue, e.data.EventCreatedDateTime, "Transaction Fee Processed");
 }
 
