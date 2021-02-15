@@ -141,7 +141,7 @@ var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, d
             "changeAmount": 0,
             "eventId": s.merchantId,
             "eventCreatedDateTime": dateTime,
-            "reference": 'Opening Balance'
+            "reference": "Opening Balance"
         }
         emit(getStreamName(s), getEventType(), openingBalanceEvent);
         s.initialised = false;
