@@ -8,6 +8,7 @@ fromCategory('MerchantArchive')
         $init: function()
         {
             return {
+                initialised: true,
                 availableBalance: 0,
                 balance: 0,
                 lastDepositDateTime: null,
@@ -69,14 +70,6 @@ function getEventTypeName() {
 
 function getEventType() { return "MerchantBalanceChangedEvent"; }
 
-function generateEventId() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
-        function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-}
-
 function addTwoNumbers(number1, number2) {
     return parseFloat((number1 + number2).toFixed(4));
 }
@@ -135,12 +128,30 @@ var merchantCreatedEventHandler = function (s, e) {
 };
 
 var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, dateTime, reference) {
+
+    if (s.initialised === true)
+    {
+        // Emit an opening balance event
+        var openingBalanceEvent = {
+            $type: getEventTypeName(),
+            "aggregateId": aggregateId,
+            "merchantId": s.merchantId,
+            "estateId": s.estateId,
+            "balance": 0,
+            "changeAmount": 0,
+            "eventId": s.merchantId,
+            "eventCreatedDateTime": dateTime,
+            "reference": "Opening Balance"
+        }
+        emit(getStreamName(s), getEventType(), openingBalanceEvent);
+        s.initialised = false;
+    }
+
     var balanceChangedEvent = {
         $type: getEventTypeName(),
         "aggregateId": aggregateId,
         "merchantId": s.merchantId,
         "estateId": s.estateId,
-        "availableBalance": s.availableBalance,
         "balance": s.balance,
         "changeAmount": changeAmount,
         "eventId": eventId,
@@ -150,6 +161,8 @@ var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, d
 
     // emit an balance changed event here
     emit(getStreamName(s), getEventType(), balanceChangedEvent);
+
+    return s;
 };
 
 var depositMadeEventHandler = function (s, e) {
@@ -164,9 +177,9 @@ var depositMadeEventHandler = function (s, e) {
     }
 
     incrementBalanceFromDeposit(s, e.data.Amount, e.data.DepositDateTime);
-
+    
     // emit an balance changed event here
-    emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.Amount, e.data.DepositDateTime, "Merchant Deposit");
+    s = emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.Amount, e.data.DepositDateTime, "Merchant Deposit");
 };
 
 var transactionHasStartedEventHandler = function (s, e) {
@@ -184,13 +197,6 @@ var transactionHasStartedEventHandler = function (s, e) {
         amount = 0;
     }
     decrementAvailableBalanceFromTransactionStarted(s, amount, e.data.TransactionDateTime);
-
-    // emit an balance changed event here
-    if (amount > 0)
-    {
-        // emit an balance changed event here
-        emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, amount, e.data.TransactionDateTime, "Transaction Started");
-    }
 };
 
 var transactionHasCompletedEventHandler = function (s, e) {
@@ -213,15 +219,14 @@ var transactionHasCompletedEventHandler = function (s, e) {
 
     if (e.data.IsAuthorised) {
         decrementBalanceFromAuthorisedTransaction(s, amount, completedTime);
+
+        // emit an balance changed event here
+        if (amount > 0) {
+            s = emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, amount * -1, completedTime, "Transaction Completed");
+        }
     }
     else {
         incrementAvailableBalanceFromDeclinedTransaction(s, amount, completedTime);
-    }
-
-    // emit an balance changed event here
-    if (amount > 0)
-    {
-        emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, amount, completedTime, "Transaction Completed");
     }
 };
 
@@ -239,6 +244,6 @@ var merchantFeeAddedToTransactionEventHandler = function (s, e) {
     incrementBalanceFromMerchantFee(s, e.data.CalculatedValue, e.data.EventCreatedDateTime);
 
     // emit an balance changed event here
-    emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.CalculatedValue, e.data.EventCreatedDateTime, "Transaction Fee Processed");
+    s = emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.CalculatedValue, e.data.EventCreatedDateTime, "Transaction Fee Processed");
 }
 
