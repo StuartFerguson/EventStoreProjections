@@ -24,9 +24,9 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
-        chai.expect(projectionState.merchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
+        chai.expect(projectionState.merchantName).to.equal(merchantCreatedEvent.data.merchantName);
     });
 
     it('Projection handles merchant manual deposit event', function () {
@@ -59,8 +59,8 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount);
         chai.expect(projectionState.balance).to.equal(depositAmount);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
@@ -69,22 +69,20 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(events.length).to.equal(2);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
     });
 
     it('Projection handles multiple merchant manual deposit event', function () {
@@ -125,8 +123,8 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(projectionState.balance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime2);
@@ -135,31 +133,28 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(events.length).to.equal(3);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent1.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount1);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount1);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent1.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
 
         var eventBody = JSON.parse(events[2].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent2.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount2);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent2.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(3);
     });
 
     it('Projection handles multiple merchant manual deposit event not in date order', function () {
@@ -201,8 +196,8 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(projectionState.balance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime1);
@@ -211,31 +206,28 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(events.length).to.equal(3);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent1.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount1);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount1);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent1.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
 
         var eventBody = JSON.parse(events[2].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent2.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount1 + depositAmount2);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount2);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent2.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(3);
     });
 
     it('Projection reduces available balance after transaction started message processed', function()
@@ -278,33 +270,31 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount - transactionAmount);
         chai.expect(projectionState.balance).to.equal(depositAmount);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
-        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
+        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.transactionDateTime);
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(2);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
     });
 
     it('Projection reduces balance after transaction completed message processed if transaction is successful', function () {
@@ -354,42 +344,39 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount - transactionAmount);
         chai.expect(projectionState.balance).to.equal(depositAmount - transactionAmount);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
-        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
+        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.transactionDateTime);
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(3);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
 
         var eventBody = JSON.parse(events[2].body);
-        chai.expect(eventBody.aggregateId).to.equal(transactionHasBeenCompletedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount);
         chai.expect(eventBody.changeAmount).to.equal(transactionAmount * -1);
         chai.expect(eventBody.reference).to.equal("Transaction Completed");
-        chai.expect(eventBody.eventId).to.equal(transactionHasBeenCompletedEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(3);
     });
 
     it('Projection resets available balance after transaction completed message processed if transaction is not successful', function () {
@@ -440,33 +427,31 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount);
         chai.expect(projectionState.balance).to.equal(depositAmount);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
-        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
+        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.transactionDateTime);
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(2);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
     });
 
     it('Projection handles merchant fee event', function () {
@@ -526,52 +511,48 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount - transactionAmount + calculatedValue);
         chai.expect(projectionState.balance).to.equal(depositAmount - transactionAmount + calculatedValue);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
-        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
-        chai.expect(projectionState.lastFeeProcessedDateTime).to.equal(merchantFeeAddedToTransactionEvent.data.EventCreatedDateTime);
+        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.transactionDateTime);
+        chai.expect(projectionState.lastFeeProcessedDateTime).to.equal(feeEventCreatedDateTime);
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(4);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
         
         var eventBody = JSON.parse(events[2].body);
-        chai.expect(eventBody.aggregateId).to.equal(transactionHasBeenCompletedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount);
         chai.expect(eventBody.changeAmount).to.equal(transactionAmount * -1);
         chai.expect(eventBody.reference).to.equal("Transaction Completed");
-        chai.expect(eventBody.eventId).to.equal(transactionHasBeenCompletedEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(3);
 
         var eventBody = JSON.parse(events[3].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantFeeAddedToTransactionEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount + calculatedValue);
         chai.expect(eventBody.changeAmount).to.equal(calculatedValue);
         chai.expect(eventBody.reference).to.equal("Transaction Fee Processed");
-        chai.expect(eventBody.eventId).to.equal(merchantFeeAddedToTransactionEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(4);
     });
 
     it('Projection handles multiple merchant fee event not in date order', function () {
@@ -641,62 +622,57 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         console.log(projectionState.availableBalance);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount - transactionAmount + calculatedValue1 + calculatedValue2);
         chai.expect(projectionState.balance).to.equal(depositAmount - transactionAmount + calculatedValue1 + calculatedValue2);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
-        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
-        chai.expect(projectionState.lastFeeProcessedDateTime).to.equal(merchantFeeAddedToTransactionEvent1.data.EventCreatedDateTime);
+        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.transactionDateTime);
+        chai.expect(projectionState.lastFeeProcessedDateTime).to.equal(merchantFeeAddedToTransactionEvent1.data.feeCalculatedDateTime);
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(5);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
 
         var eventBody = JSON.parse(events[2].body);
-        chai.expect(eventBody.aggregateId).to.equal(transactionHasBeenCompletedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount);
         chai.expect(eventBody.changeAmount).to.equal(transactionAmount * -1);
         chai.expect(eventBody.reference).to.equal("Transaction Completed");
-        chai.expect(eventBody.eventId).to.equal(transactionHasBeenCompletedEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(3);
 
         var eventBody = JSON.parse(events[3].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantFeeAddedToTransactionEvent1.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount + calculatedValue1);
         chai.expect(eventBody.changeAmount).to.equal(calculatedValue1);
         chai.expect(eventBody.reference).to.equal("Transaction Fee Processed");
-        chai.expect(eventBody.eventId).to.equal(merchantFeeAddedToTransactionEvent1.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(4);
 
         var eventBody = JSON.parse(events[4].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantFeeAddedToTransactionEvent2.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount + calculatedValue1 + calculatedValue2);
         chai.expect(eventBody.changeAmount).to.equal(calculatedValue2);
         chai.expect(eventBody.reference).to.equal("Transaction Fee Processed");
-        chai.expect(eventBody.eventId).to.equal(merchantFeeAddedToTransactionEvent2.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(5);
     });
 
     it('Projection does not emit a balance event on a successful logon transaction ', function()
@@ -748,8 +724,8 @@ describe('Merchant Balance Calculator Tests', function()
 
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount);
         chai.expect(projectionState.balance).to.equal(depositAmount);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
@@ -758,16 +734,15 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(events.length).to.equal(2);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
     });
 
     it('Projection handles events with no Merchant Created', function () {
@@ -819,42 +794,39 @@ describe('Merchant Balance Calculator Tests', function()
         
         chai.expect(projectionState).to.not.be.null;
 
-        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
-        chai.expect(projectionState.merchantName).to.equal(merchantCreatedEvent.data.MerchantName);
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
+        chai.expect(projectionState.merchantName).to.equal(merchantCreatedEvent.data.merchantName);
         chai.expect(projectionState.availableBalance).to.equal(depositAmount - transactionAmount);
         chai.expect(projectionState.balance).to.equal(depositAmount - transactionAmount);
         chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
-        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.TransactionDateTime);
+        chai.expect(projectionState.lastSaleDateTime).to.equal(transactionHasStartedEvent.data.transactionDateTime);
 
         var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(3);
 
         var eventBody = JSON.parse(events[0].body);
-        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(0);
         chai.expect(eventBody.changeAmount).to.equal(0);
         chai.expect(eventBody.reference).to.equal("Opening Balance");
-        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.eventId).to.equal(1);
 
         var eventBody = JSON.parse(events[1].body);
-        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount);
         chai.expect(eventBody.changeAmount).to.equal(depositAmount);
         chai.expect(eventBody.reference).to.equal("Merchant Deposit");
-        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(2);
         
         var eventBody = JSON.parse(events[2].body);
-        chai.expect(eventBody.aggregateId).to.equal(transactionHasBeenCompletedEvent.data.AggregateId);
-        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.EstateId);
-        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.MerchantId);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
         chai.expect(eventBody.balance).to.equal(depositAmount - transactionAmount);
         chai.expect(eventBody.changeAmount).to.equal(transactionAmount * -1);
         chai.expect(eventBody.reference).to.equal("Transaction Completed");
-        chai.expect(eventBody.eventId).to.equal(transactionHasBeenCompletedEvent.data.EventId);
+        chai.expect(eventBody.eventId).to.equal(3);
     });
 });
