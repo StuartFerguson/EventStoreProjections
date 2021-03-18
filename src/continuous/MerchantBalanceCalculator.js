@@ -5,8 +5,7 @@ var emit = emit || require('../../node_modules/event-store-projection-testing').
 fromCategory('MerchantArchive')
     .foreachStream()
     .when({
-        $init: function()
-        {
+        $init: function () {
             return {
                 initialised: true,
                 availableBalance: 0,
@@ -18,7 +17,8 @@ fromCategory('MerchantArchive')
                 totalDeposits: 0,
                 totalAuthorisedSales: 0,
                 totalDeclinedSales: 0,
-                totalFees: 0
+                totalFees: 0,
+                emittedEvents:1
             }
         },
         $any: function (s, e) {
@@ -33,27 +33,27 @@ fromCategory('MerchantArchive')
 var eventbus = {
     dispatch: function (s, e) {
 
-        if (e.eventType === 'EstateManagement.Merchant.DomainEvents.MerchantCreatedEvent') {
+        if (e.eventType === 'MerchantCreatedEvent') {
             merchantCreatedEventHandler(s, e);
             return;
         }
 
-        if (e.eventType === 'EstateManagement.Merchant.DomainEvents.ManualDepositMadeEvent') {
+        if (e.eventType === 'ManualDepositMadeEvent') {
             depositMadeEventHandler(s, e);
             return;
         }
 
-        if (e.eventType === 'TransactionProcessor.Transaction.DomainEvents.TransactionHasStartedEvent') {
+        if (e.eventType === 'TransactionHasStartedEvent') {
             transactionHasStartedEventHandler(s, e);
             return;
         }
 
-        if (e.eventType === 'TransactionProcessor.Transaction.DomainEvents.TransactionHasBeenCompletedEvent') {
+        if (e.eventType === 'TransactionHasBeenCompletedEvent') {
             transactionHasCompletedEventHandler(s, e);
             return;
         }
 
-        if (e.eventType === 'TransactionProcessor.Transaction.DomainEvents.MerchantFeeAddedToTransactionEvent') {
+        if (e.eventType === 'MerchantFeeAddedToTransactionEvent') {
             merchantFeeAddedToTransactionEventHandler(s, e);
             return;
         }
@@ -122,15 +122,15 @@ var incrementAvailableBalanceFromDeclinedTransaction = function (s, amount) {
 var merchantCreatedEventHandler = function (s, e) {
 
     // Setup the state here
-    s.estateId = e.data.EstateId;
-    s.merchantId = e.data.MerchantId;
-    s.merchantName = e.data.MerchantName;
+    s.estateId = e.data.estateId;
+    s.merchantId = e.data.merchantId;
+    s.merchantName = e.data.merchantName;
 };
 
 var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, dateTime, reference) {
 
-    if (s.initialised === true)
-    {
+    if (s.initialised === true) {
+        
         // Emit an opening balance event
         var openingBalanceEvent = {
             $type: getEventTypeName(),
@@ -139,11 +139,12 @@ var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, d
             "estateId": s.estateId,
             "balance": 0,
             "changeAmount": 0,
-            "eventId": s.merchantId,
+            "eventId": s.emittedEvents,
             "eventCreatedDateTime": dateTime,
             "reference": "Opening Balance"
         }
         emit(getStreamName(s), getEventType(), openingBalanceEvent);
+        s.emittedEvents++;
         s.initialised = false;
     }
 
@@ -154,32 +155,31 @@ var emitBalanceChangedEvent = function (aggregateId, eventId, s, changeAmount, d
         "estateId": s.estateId,
         "balance": s.balance,
         "changeAmount": changeAmount,
-        "eventId": eventId,
+        "eventId": s.emittedEvents,
         "eventCreatedDateTime": dateTime,
         "reference": reference
     }
 
     // emit an balance changed event here
     emit(getStreamName(s), getEventType(), balanceChangedEvent);
-
+    s.emittedEvents++;
     return s;
 };
 
 var depositMadeEventHandler = function (s, e) {
 
     // Check if we have got a merchant id already set
-    if (s.merchantId === undefined)
-    {
+    if (s.merchantId === undefined) {
         // We have obviously not got a created event yet but we must process this event,
         // so fill in what we can here
-        s.estateId = e.data.EstateId;
-        s.merchantId = e.data.MerchantId;
+        s.estateId = e.data.estateId;
+        s.merchantId = e.data.merchantId;
     }
 
-    incrementBalanceFromDeposit(s, e.data.Amount, e.data.DepositDateTime);
-    
+    incrementBalanceFromDeposit(s, e.data.amount, e.data.depositDateTime);
+
     // emit an balance changed event here
-    s = emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.Amount, e.data.DepositDateTime, "Merchant Deposit");
+    s = emitBalanceChangedEvent(e.data.aggregateId, e.data.eventId, s, e.data.amount, e.data.depositDateTime, "Merchant Deposit");
 };
 
 var transactionHasStartedEventHandler = function (s, e) {
@@ -188,15 +188,15 @@ var transactionHasStartedEventHandler = function (s, e) {
     if (s.merchantId === undefined) {
         // We have obviously not got a created event yet but we must process this event,
         // so fill in what we can here
-        e.estateId = e.data.EstateId;
-        s.merchantId = e.data.MerchantId;
+        e.estateId = e.data.estateId;
+        s.merchantId = e.data.merchantId;
     }
 
-    var amount = e.data.TransactionAmount;
+    var amount = e.data.transactionAmount;
     if (amount === undefined) {
         amount = 0;
     }
-    decrementAvailableBalanceFromTransactionStarted(s, amount, e.data.TransactionDateTime);
+    decrementAvailableBalanceFromTransactionStarted(s, amount, e.data.transactionDateTime);
 };
 
 var transactionHasCompletedEventHandler = function (s, e) {
@@ -205,24 +205,24 @@ var transactionHasCompletedEventHandler = function (s, e) {
     if (s.merchantId === undefined) {
         // We have obviously not got a created event yet but we must process this event,
         // so fill in what we can here
-        e.estateId = e.data.EstateId;
-        s.merchantId = e.data.MerchantId;
+        e.estateId = e.data.estateId;
+        s.merchantId = e.data.merchantId;
     }
 
-    var amount = e.data.TransactionAmount;
+    var amount = e.data.transactionAmount;
     if (amount === undefined) {
         amount = 0;
     }
 
-    var transactionDateTime = new Date(Date.parse(e.data.CompletedDateTime));
+    var transactionDateTime = new Date(Date.parse(e.data.completedDateTime));
     var completedTime = new Date(transactionDateTime.getFullYear(), transactionDateTime.getMonth(), transactionDateTime.getDate(), transactionDateTime.getHours(), transactionDateTime.getMinutes(), transactionDateTime.getSeconds() + 2);
 
-    if (e.data.IsAuthorised) {
+    if (e.data.isAuthorised) {
         decrementBalanceFromAuthorisedTransaction(s, amount, completedTime);
 
         // emit an balance changed event here
         if (amount > 0) {
-            s = emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, amount * -1, completedTime, "Transaction Completed");
+            s = emitBalanceChangedEvent(e.data.aggregateId, e.data.eventId, s, amount * -1, completedTime, "Transaction Completed");
         }
     }
     else {
@@ -236,14 +236,13 @@ var merchantFeeAddedToTransactionEventHandler = function (s, e) {
     if (s.merchantId === undefined) {
         // We have obviously not got a created event yet but we must process this event,
         // so fill in what we can here
-        e.estateId = e.data.EstateId;
-        s.merchantId = e.data.MerchantId;
+        e.estateId = e.data.estateId;
+        s.merchantId = e.data.merchantId;
     }
 
     // increment the balance now
-    incrementBalanceFromMerchantFee(s, e.data.CalculatedValue, e.data.EventCreatedDateTime);
+    incrementBalanceFromMerchantFee(s, e.data.calculatedValue, e.data.feeCalculatedDateTime);
 
     // emit an balance changed event here
-    s = emitBalanceChangedEvent(e.data.AggregateId, e.data.EventId, s, e.data.CalculatedValue, e.data.EventCreatedDateTime, "Transaction Fee Processed");
+    s = emitBalanceChangedEvent(e.data.aggregateId, e.data.eventId, s, e.data.calculatedValue, e.data.feeCalculatedDateTime, "Transaction Fee Processed");
 }
-
