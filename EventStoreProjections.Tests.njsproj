@@ -39,6 +39,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\continuous\MerchantBalanceCalculator.js" />
+    <Content Include="src\continuous\TransactionEnricher.js" />
     <Content Include="tests\MerchantAggregatorTests.js">
       <SubType>Code</SubType>
     </Content>
@@ -61,6 +62,7 @@
     <Content Include="tests\TestData.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="tests\TransactionEnricherTests.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />
