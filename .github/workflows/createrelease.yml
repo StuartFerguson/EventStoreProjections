@@ -30,11 +30,32 @@ jobs:
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       
     # Add files to release
-    - name: Upload projection files to release
+    - name: Upload merchant aggregator projection file to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/MerchantAggregator.js
-        asset_name: Merchant Aggregator
+        asset_name: MerchantAggregator.js
         tag: ${{ github.ref }}
         overwrite: true
+        body: "Merchant Aggregator Projection"
+
+    - name: Upload merchant balance calculator projection file to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/MerchantBalanceCalculator.js
+        asset_name: MerchantBalanceCalculator.js
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Merchant Balance Calculator Projection"        
+
+    - name: Upload transaction enricher projection file to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/TransactionEnricher.js
+        asset_name: TransactionEnricher.js
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Transaction Enricher Projection"
