@@ -1,1 +1,40 @@
+name: Release
 
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+    name: "Release"
+    env:
+      NODE_VERSION: '12.x'                # set this to the node version to use
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2.3.4
+
+    - name: Setup Node.js ${{ env.NODE_VERSION }}
+      uses: actions/setup-node@v1.4.4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Run Unit Tests
+      run: |
+        npm install
+        npm run test
+
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      
+    # Add files to release
+    - name: Upload projection files to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/MerchantAggregator.js
+        asset_name: Merchant Aggregator
+        tag: ${{ github.ref }}
+        overwrite: true
