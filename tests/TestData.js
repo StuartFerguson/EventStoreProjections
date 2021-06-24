@@ -7,6 +7,47 @@ function generateEventId() {
 };
 
 module.exports = {
+
+    getEstateCreatedEvent: function(estateId, estateName)
+    {
+        return {
+            eventType: 'EstateCreatedEvent',
+            data: {
+                "estateId": estateId,
+                "estateName": estateName
+            },
+            metadata: {
+
+            }
+        };
+    },
+
+    getSecurityUserAddedToEstateEvent: function (estateId, securityUserId, emailAddress) {
+        return {
+            eventType: 'SecurityUserAddedToEstateEvent',
+            data: {
+                "emailAddress": emailAddress,
+                "estateId": estateId,
+                "securityUserId": securityUserId
+            },
+            metadata: {
+            }
+        };
+    },
+
+    getOperatorAddedToEstateEvent: function (estateId, operatorName, operatorId) {
+        return {
+            eventType: 'OperatorAddedToEstateEvent',
+            data: {
+                "estateId": estateId,
+                "name": operatorName,
+                "operatorId": operatorId
+            }	,
+            metadata: {
+            }
+        };
+    },
+
     getMerchantCreatedEvent: function (estateId, merchantId, merchantName)
     {
         return {
@@ -73,9 +114,9 @@ module.exports = {
         };
     },
 
-    getSecurityUserAddedEvent: function (estateId, merchantId, securityUserId, emailAddress) {
+    getSecurityUserAddedToMerchantEvent: function (estateId, merchantId, securityUserId, emailAddress) {
         return {
-            eventType: 'SecurityUserAddedEvent',
+            eventType: 'SecurityUserAddedToMerchantEvent',
             data: {
                 "emailAddress": emailAddress,
                 "estateId": estateId,
@@ -276,5 +317,260 @@ module.exports = {
                 "feeCalculatedDateTime": feeEventCreatedDateTime
             }					
         }
+    },
+
+    getContractCreatedEvent: function(estateId, contractId, operatorId, description)
+    {
+        return {
+            eventType: 'ContractCreatedEvent',
+            data: {
+                "description": description,
+                "estateId": estateId,
+                "operatorId": operatorId,
+                "contractId": contractId
+            }	,
+            metadata: {
+            }
+        }
+    },
+
+    getFixedValueProductAddedToContractEvent: function (estateId, contractId, productId, productName, displayText, value)
+    {
+        return {
+            eventType: 'FixedValueProductAddedToContractEvent',
+            data: {
+                "contractId": contractId,
+                "displayText": displayText,
+                "estateId": estateId,
+                "productId": productId,
+                "productName": productName,
+                "value": value
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getVariableValueProductAddedToContractEvent: function (estateId, contractId, productId, productName, displayText) {
+        return {
+            eventType: 'VariableValueProductAddedToContractEvent',
+            data: {
+                "contractId": contractId,
+                "displayText": displayText,
+                "estateId": estateId,
+                "productId": productId,
+                "productName": productName
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getTransactionFeeForProductAddedToContractEvent: function (estateId, contractId, productId, description, feeId, value) {
+        return {
+            eventType: 'TransactionFeeForProductAddedToContractEvent',
+            data: {
+                "contractId": contractId,
+                "description": description,
+                "estateId": estateId,
+                "productId": productId,
+                "transactionFeeId": feeId,
+                "value": value
+            }	,
+            metadata: {
+            }
+        }
+    },
+
+    getMerchantFeeAddedToTransactionEnrichedEvent: function (estateId, merchantId, transactionId, feeId, feeCalculatedDateTime, feeValue, calculatedValue){
+        return {
+            eventType: 'MerchantFeeAddedToTransactionEnrichedEvent',
+            data: {
+                "calculatedValue": calculatedValue,
+                "feeCalculatedDateTime": feeCalculatedDateTime,
+                "estateId": estateId,
+                "feeId": feeId,
+                "feeValue": feeValue,
+                "merchantId": merchantId,
+                "transactionId": transactionId,
+                "eventId": "562f99ed-75b5-5b04-95e1-52d12c0433c0"
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getVoucherGeneratedEvent: function(estateId, voucherId, transactionId, value,voucherCode)
+    {
+        return {
+            eventType: 'VoucherGeneratedEvent',
+            data: {
+                "estateId": estateId,
+                "transactionId": transactionId,
+                "voucherId": voucherId,
+                "operatorIdentifier": "Voucher",
+                "value": value,
+                "voucherCode": voucherCode,
+                "expiryDateTime": "2021-06-27T05:57:38.3695404+00:00",
+                "generatedDateTime": "2021-05-28T05:57:38.3695404+00:00",
+                "message": ""
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getBarcodeAddedEvent: function (estateId, voucherId) {
+        return {
+            eventType: 'BarcodeAddedEvent',
+            data: {
+                "barcode": "iVBORw0KGgoAAAANSUhEUgAAALQAAABaCAYAAAARg3zAAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAUZJREFUeJzt0ksKwjAAQMHG+9+5LqSggVpbceFjZpc2P8Iby7Ksy5N1fQzHGC/jzfZ9djRv7//Z/X91r7Pr99ZdfYer5377rvN5Z+fN5xzdd95nb92n587zb29vD39G0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiZF0KQImhRBkyJoUgRNiqBJETQpgiblDrLoSbOImTw4AAAAAElFTkSuQmCC",
+                "estateId": estateId,
+                "voucherId": voucherId
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getVoucherIssuedEvent: function (estateId, voucherId) {
+        return {
+            eventType: 'VoucherIssuedEvent',
+            data: {
+                "estateId": estateId,
+                "issuedDateTime": "2021-05-28T05:57:38.3695404+00:00",
+                "recipientMobile": "1234567890",
+                "voucherId": voucherId
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getImportLogCreatedEvent: function (estateId, fileImportLogId)
+    {
+        return {
+            eventType: 'ImportLogCreatedEvent',
+            data: {
+                "estateId": estateId,
+                "fileImportLogId": fileImportLogId,
+                "importLogDateTime": "2021-06-01T11:08:04.059497+00:00"
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileAddedToImportLogEvent: function (estateId, merchantId, userId, fileId, fileImportLogId, fileProfileId) {
+        return {
+            eventType: 'FileAddedToImportLogEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "fileImportLogId": fileImportLogId,
+                "filePath": "/home/txnproc/bulkfiles/safaricom//9ea91bd839fd40a39e779957c8571887-9b0dafb3a79d40ed3af21943dc7f88ca",
+                "fileProfileId": fileProfileId,
+                "fileUploadedDateTime": "2021-06-01T11:08:04.0486043+00:00",
+                "merchantId": merchantId,
+                "originalFileName": "Safaricom -2021-05-31-00-00-00",
+                "userId": userId
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileCreatedEvent: function(estateId, merchantId, userId, fileId, fileImportLogId, fileProfileId)
+    {
+        return {
+            eventType: 'FileCreatedEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "fileImportLogId": fileImportLogId,
+                "filePath": "/home/txnproc/bulkfiles/safaricom//9ea91bd839fd40a39e779957c8571887-9b0dafb3a79d40ed3af21943dc7f88ca",
+                "fileProfileId": fileProfileId,
+                "fileReceivedDateTime": "2021-06-01T11:08:04.0486043+00:00",
+                "merchantId": merchantId,
+                "userId": userId
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileLineAddedEvent: function (estateId, fileId, lineNumber)
+    {
+        return {
+            eventType: 'FileLineAddedEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "fileLine": "H,2021-05-31-00-00-00\r",
+                "lineNumber": lineNumber
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileLineProcessingSuccessfulEvent: function (estateId, fileId, lineNumber,transactionId)
+    {
+        return {
+            eventType: 'FileLineProcessingSuccessfulEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "lineNumber": lineNumber,
+                "transactionId": transactionId
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileLineProcessingIgnoredEvent: function (estateId, fileId, lineNumber) {
+        return {
+            eventType: 'FileLineProcessingIgnoredEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "lineNumber": lineNumber
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileLineProcessingFailedEvent: function (estateId, fileId, lineNumber, transactionId) {
+        return {
+            eventType: 'FileLineProcessingFailedEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "lineNumber": lineNumber,
+                "transactionId": transactionId,
+                "responseCode": "1010",
+                "responseMessage": ""
+            },
+            metadata: {
+            }
+        }
+    },
+
+    getFileProcessingCompletedEvent: function (estateId, fileId) {
+        return {
+            eventType: 'FileProcessingCompletedEvent',
+            data: {
+                "estateId": estateId,
+                "fileId": fileId,
+                "processingCompletedDateTime": "2021-06-01T11:08:04.0486043+00:00",
+            },
+            metadata: {
+            }
+        }
     }
+
+
+
 };
