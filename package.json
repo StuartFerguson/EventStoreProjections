@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "event-store-projection-testing": "^2.0.1",
     "mocha-isolation": "^0.1.5"
   },
   "scripts": {
