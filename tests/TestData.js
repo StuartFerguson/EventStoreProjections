@@ -1,24 +1,18 @@
-function generateEventId() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
-        function (c) {
-            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
-};
-
 module.exports = {
 
     getEstateCreatedEvent: function(estateId, estateName)
     {
         return {
             eventType: 'EstateCreatedEvent',
+
             data: {
                 "estateId": estateId,
                 "estateName": estateName
             },
             metadata: {
 
-            }
+            },
+            eventId: "9A0C1FA6-C667-4270-B666-67219969713C"
         };
     },
 
@@ -31,7 +25,8 @@ module.exports = {
                 "securityUserId": securityUserId
             },
             metadata: {
-            }
+            },
+            eventId: "0BA6D626-C700-451E-B920-3E5F0F41A365"
         };
     },
 
@@ -44,7 +39,8 @@ module.exports = {
                 "operatorId": operatorId
             }	,
             metadata: {
-            }
+            },
+            eventId: "732CA7AC-0A75-4BCF-B60F-D5B057CFD64A"
         };
     },
 
@@ -60,11 +56,13 @@ module.exports = {
             },
             metadata: {
                 
-            }
+            },
+            eventId: "F1E549DC-EA7D-4D74-840B-2D2311CA0269"
         };
     },
 
-    getAddressAddedEvent: function (estateId, merchantId) {
+    getAddressAddedEvent: function (estateId, merchantId)
+    {
         return {
             eventType: 'AddressAddedEvent',
             data: {
@@ -76,10 +74,11 @@ module.exports = {
                 "postalCode": "TE57 1NG",
                 "region": "Test Region",
                 "town": "Test Town"
-            }	,
+            },
             metadata: {
-            }
-        };
+            },
+            eventId: "46A7D0A5-6D73-49B5-945E-9DC6B0F41885"
+    };
     },
 
     getContactAddedEvent: function (estateId, merchantId) {
@@ -94,7 +93,8 @@ module.exports = {
                 "merchantId": merchantId
             },
             metadata: {
-            }
+            },
+            eventId:"CA506880-A2C9-4F39-872E-57BD129BC1C9"
         };
     },
 
@@ -110,7 +110,8 @@ module.exports = {
                 "terminalNumber": terminalNumber
             },
             metadata: {
-            }
+            },
+            eventId:"528416C3-CAE5-47C6-B2F1-2B2C7B37E1E1"
         };
     },
 
@@ -124,7 +125,8 @@ module.exports = {
                 "securityUserId": securityUserId
             },
             metadata: {
-            }
+            },
+            eventId:"7F29A577-DB7F-46C1-8A8A-7A5011AD5074"
         };
     },
     
@@ -139,7 +141,9 @@ module.exports = {
                 "merchantId": merchantId
             },
             metadata: {
-            }
+            },
+            eventId:"A2823DDA-83B8-4FDB-AD27-0A730843EF1A"
+
         }
     },
 
@@ -156,7 +160,8 @@ module.exports = {
                 "reference": "Test Deposit from UI"
             },
             metadata: {
-            }
+            },
+            eventId:"4772BD21-BB70-4F46-9360-F9A6FE04C640"
         }
     },
 
@@ -176,7 +181,8 @@ module.exports = {
                 "transactionReference": "fb3eeba01dbe3ad"
             },
             metadata: {
-            }	
+            },
+            eventId:"83AC3E75-816C-420F-978C-D74C814EB68D"
         }
     },
 
@@ -192,7 +198,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"BB6402A4-C459-4003-BCD0-650C1D94FE56"
         }
     },
 
@@ -210,7 +217,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"6183F1D9-25C6-4C7D-9DE0-2F08A284F652"
         }
     },
 
@@ -227,7 +235,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"867917C1-1278-4A4E-BC45-3B3F96F0A435"
         }
     },
 
@@ -242,7 +251,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"DEA74F02-348F-42D1-9784-FDBACBD1E1CC"
         }
     },
 
@@ -261,7 +271,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"2D3275C2-C122-4AF8-AAA5-E74F81181D10"
         }
     },
 
@@ -279,7 +290,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"F7B216E4-6FE3-4B8E-A0C0-EFA85783ACF2"
         }
     },
 
@@ -298,7 +310,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"7F1FA1B5-449F-4F94-AF5C-5A536CBDAF57"
         }
     },
     
@@ -315,7 +328,8 @@ module.exports = {
                 "merchantId": merchantId,
                 "transactionId": transactionId,
                 "feeCalculatedDateTime": feeEventCreatedDateTime
-            }					
+            },
+            eventId:"290D1C47-86F0-496C-9567-8133066654F1"
         }
     },
 
@@ -330,7 +344,8 @@ module.exports = {
                 "contractId": contractId
             }	,
             metadata: {
-            }
+            },
+            eventId:"DC6AC333-11FB-4C55-B606-07C15938713B"
         }
     },
 
@@ -347,7 +362,8 @@ module.exports = {
                 "value": value
             },
             metadata: {
-            }
+            },
+            eventId:"71B1E356-0CCE-44BF-BEF7-F53857A8A374"
         }
     },
 
@@ -362,7 +378,8 @@ module.exports = {
                 "productName": productName
             },
             metadata: {
-            }
+            },
+            eventId:"AC80EA38-1BB1-44FD-975E-AE9AE45FFBD8"
         }
     },
 
@@ -378,7 +395,8 @@ module.exports = {
                 "value": value
             }	,
             metadata: {
-            }
+            },
+            eventId:"D76CE0D1-56AF-49E1-817D-67941AE97205"
         }
     },
 
@@ -396,7 +414,8 @@ module.exports = {
                 "eventId": "562f99ed-75b5-5b04-95e1-52d12c0433c0"
             },
             metadata: {
-            }
+            },
+            eventId:"AECA5F32-A8A1-4B68-BBF3-389A1C825D59"
         }
     },
 
@@ -416,7 +435,8 @@ module.exports = {
                 "message": ""
             },
             metadata: {
-            }
+            },
+            eventId:"B589A8E3-2060-4072-B508-505AC8838FC2"
         }
     },
 
@@ -429,7 +449,8 @@ module.exports = {
                 "voucherId": voucherId
             },
             metadata: {
-            }
+            },
+            eventId:"841D45BE-0125-4AED-B7A7-C13251C75768"
         }
     },
 
@@ -443,7 +464,8 @@ module.exports = {
                 "voucherId": voucherId
             },
             metadata: {
-            }
+            },
+            eventId:"0A6ED40D-0C10-4ACE-B039-9854E55BD377"
         }
     },
 
@@ -457,7 +479,8 @@ module.exports = {
                 "importLogDateTime": "2021-06-01T11:08:04.059497+00:00"
             },
             metadata: {
-            }
+            },
+            eventId:"9619BDC6-E778-48D0-AE49-4450371E11CE"
         }
     },
 
@@ -476,7 +499,8 @@ module.exports = {
                 "userId": userId
             },
             metadata: {
-            }
+            },
+            eventId:"E7258128-8C2B-4E16-80D1-FD05EBE9D665"
         }
     },
 
@@ -495,7 +519,8 @@ module.exports = {
                 "userId": userId
             },
             metadata: {
-            }
+            },
+            eventId:"85F594ED-FD93-4FD0-8C78-53AEE0A54195"
         }
     },
 
@@ -510,7 +535,8 @@ module.exports = {
                 "lineNumber": lineNumber
             },
             metadata: {
-            }
+            },
+            eventId:"D1309600-5F42-4E25-A7C0-F0800AF0E006"
         }
     },
 
@@ -525,7 +551,8 @@ module.exports = {
                 "transactionId": transactionId
             },
             metadata: {
-            }
+            },
+            eventId:"55D0E995-2586-4086-8BBE-E73C58F99966"
         }
     },
 
@@ -538,7 +565,8 @@ module.exports = {
                 "lineNumber": lineNumber
             },
             metadata: {
-            }
+            },
+            eventId:"524BB70A-71DC-4E87-8A8E-40EC623EDC15"
         }
     },
 
@@ -554,7 +582,8 @@ module.exports = {
                 "responseMessage": ""
             },
             metadata: {
-            }
+            },
+            eventId:"041A71E1-3268-4EBF-A25C-523C54235D0B"
         }
     },
 
@@ -567,7 +596,8 @@ module.exports = {
                 "processingCompletedDateTime": "2021-06-01T11:08:04.0486043+00:00",
             },
             metadata: {
-            }
+            },
+            eventId:"02A5FB46-6A6B-48A0-B3E2-D2C46999ABF5"
         }
     }
 
