@@ -1,6 +1,6 @@
 var chai = require('chai');
 require('../src/continuous/EstateAggregator.js');
-var projection = require('event-store-projection-testing');
+var projection = require('esprojection-testing-framework');
 var testData = require('./TestData.js');
 
 describe('Estate Aggregator Tests', function()

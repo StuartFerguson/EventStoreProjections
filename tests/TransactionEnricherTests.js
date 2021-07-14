@@ -1,6 +1,6 @@
 var chai = require('chai');
 require('../src/continuous/TransactionEnricher.js');
-var projection = require('event-store-projection-testing');
+var projection = require('esprojection-testing-framework');
 var testData = require('./TestData.js');
 
 describe('Transaction Enricher Tests', function () {
@@ -44,22 +44,30 @@ describe('Transaction Enricher Tests', function () {
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         transactionHasStartedEvent.eventType,
-        transactionHasStartedEvent.data);
+        transactionHasStartedEvent.data,
+        null,
+        transactionHasStartedEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         productDetailsAddedToTransactionEvent.eventType,
-        productDetailsAddedToTransactionEvent.data);
+        productDetailsAddedToTransactionEvent.data,
+        null,
+        productDetailsAddedToTransactionEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         additionalRequestDataRecordedEvent.eventType,
-        additionalRequestDataRecordedEvent.data);
+        additionalRequestDataRecordedEvent.data,
+        null,
+        additionalRequestDataRecordedEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         transactionHasBeenLocallyAuthorisedEvent.eventType,
-        transactionHasBeenLocallyAuthorisedEvent.data);
+        transactionHasBeenLocallyAuthorisedEvent.data,
+        null,
+        transactionHasBeenLocallyAuthorisedEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
@@ -69,26 +77,34 @@ describe('Transaction Enricher Tests', function () {
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         transactionAuthorisedByOperatorEvent.eventType,
-        transactionAuthorisedByOperatorEvent.data);
+        transactionAuthorisedByOperatorEvent.data,
+        null,
+        transactionAuthorisedByOperatorEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         transactionDeclinedByOperatorEvent.eventType,
-        transactionDeclinedByOperatorEvent.data);
+        transactionDeclinedByOperatorEvent.data,
+        null,
+        transactionDeclinedByOperatorEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         transactionHasBeenCompletedEvent.eventType,
-        transactionHasBeenCompletedEvent.data);
+        transactionHasBeenCompletedEvent.data,
+        null,
+        transactionHasBeenCompletedEvent.eventId);
 
     projection.processEvent(
         'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
         merchantFeeAddedToTransactionEvent.eventType,
-        merchantFeeAddedToTransactionEvent.data);
+        merchantFeeAddedToTransactionEvent.data,
+        null,
+        merchantFeeAddedToTransactionEvent.eventId);
 
     var events = projection.emittedEvents;
         chai.expect(events.length).to.equal(9);
         var eventBody = JSON.parse(events[8].body);
-        chai.expect(eventBody.eventId).to.not.be.undefined;
+        chai.expect(eventBody.eventId).to.equal(merchantFeeAddedToTransactionEvent.eventId);
     });
 });

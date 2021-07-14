@@ -1,6 +1,6 @@
 var chai = require('chai');
 require('../src/continuous/MerchantAggregator.js');
-var projection = require('event-store-projection-testing');
+var projection = require('esprojection-testing-framework');
 var testData = require('./TestData.js');
 
 describe('Merchant Aggregator Tests', function()
@@ -32,7 +32,7 @@ describe('Merchant Aggregator Tests', function()
         var securityUserId = 'e41e6196-4f18-4f49-bab4-ead032c1e52e';
         var emailAddress = 'merchantuser@emulatormerchant.co.uk';
         var securityUserAddedEvent =
-            testData.getSecurityUserAddedEvent(estateId, merchantId, securityUserId, emailAddress);
+            testData.getSecurityUserAddedToMerchantEvent(estateId, merchantId, securityUserId, emailAddress);
 
         var deviceId = '24297b34-b1cf-48bf-a391-eb1b8a48fdc7';
         var deviceIdentifier = 'EMULATOR29X3X2X0';
