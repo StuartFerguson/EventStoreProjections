@@ -30,6 +30,26 @@ jobs:
       run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
       
     # Add files to release
+    - name: Upload estate aggregator projection file to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/EstateAggregator.js
+        asset_name: EstateAggregator.js
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Estate Aggregator Projection"
+
+    - name: Upload file processor subscription stream builder projection file to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/FileProcessorSubscriptionStreamBuilder.js
+        asset_name: FileProcessorSubscriptionStreamBuilder.js
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "File Processor Subscription Stream Builder Projection" 
+
     - name: Upload merchant aggregator projection file to release
       uses: svenstaro/upload-release-action@v2
       with:
@@ -59,3 +79,13 @@ jobs:
         tag: ${{ github.ref }}
         overwrite: true
         body: "Transaction Enricher Projection"
+
+    - name: Upload transaction processor subscription stream builder projection file to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/TransactionProcessorSubscriptionStreamBuilder.js
+        asset_name: TransactionProcessorSubscriptionStreamBuilder.js
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Transaction Processor Subscription Stream Builder Projection" 
