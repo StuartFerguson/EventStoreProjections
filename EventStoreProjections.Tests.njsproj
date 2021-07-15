@@ -36,10 +36,17 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\continuous\EstateAggregator.js" />
+    <Content Include="src\continuous\FileProcessorSubscriptionStreamBuilder.js" />
     <Content Include="src\continuous\MerchantAggregator.js" />
     <Content Include="src\continuous\MerchantBalanceCalculator.js" />
     <Content Include="src\continuous\TransactionEnricher.js" />
+    <Content Include="src\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tests\EstateAggregatorTests.js" />
+    <Content Include="tests\FileProcessorSubscriptionStreamBuilderTests.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tests\MerchantAggregatorTests.js" />
     <Content Include="tests\MerchantBalanceCalculatorTests.js">
       <SubType>Code</SubType>
@@ -61,6 +68,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="tests\TransactionEnricherTests.js" />
+    <Content Include="tests\TransactionProcessorSubscriptionStreamBuilderTests.js">
+      <SubType>Code</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />

@@ -881,7 +881,6 @@ describe('Merchant Balance Calculator Tests', function()
             transactionHasBeenCompletedEvent.data,
             null,
             transactionHasBeenCompletedEvent.eventId);
-            
 
         var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
 
@@ -893,7 +892,6 @@ describe('Merchant Balance Calculator Tests', function()
             merchantCreatedEvent.eventId);
 
         var projectionState = projection.getState();
-
         
         chai.expect(projectionState).to.not.be.null;
 
