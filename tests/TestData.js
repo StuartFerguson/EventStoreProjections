@@ -599,6 +599,22 @@ module.exports = {
             },
             eventId:"02A5FB46-6A6B-48A0-B3E2-D2C46999ABF5"
         }
+    },
+    
+    getCustomerEmailReceiptRequestedEvent: function (estateId, merchantId, transactionId, customerEmailAddress)
+    {
+        return {
+            eventType: 'CustomerEmailReceiptRequestedEvent',
+            data: {
+                "estateId": estateId,
+                "merchantId": merchantId,
+                "transactionId": transactionId,
+                "customerEmailAddress": customerEmailAddress
+            },
+            metadata: {
+            },
+            eventId: "6CCD33B7-07D5-4545-AD84-E0752743A5D2"
+        }
     }
 
 
