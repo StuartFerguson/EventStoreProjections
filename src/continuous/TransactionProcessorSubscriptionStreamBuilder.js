@@ -53,9 +53,9 @@ fromAll()
                     };
                 }
 
-                if (isARequiredEvent(e) == false) return;
+                if (isARequiredEvent(e) === false) return;
 
-                linkTo(s.estates[e.data.estateId].name, e);
+                linkTo(getStreamName(s.estates[e.data.estateId].name), e);
             }
         }
     }
