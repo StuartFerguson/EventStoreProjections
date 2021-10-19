@@ -89,3 +89,13 @@ jobs:
         tag: ${{ github.ref }}
         overwrite: true
         body: "Transaction Processor Subscription Stream Builder Projection" 
+
+    - name: Upload callback handler subscription stream builder projection file to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: /home/runner/work/EventStoreProjections/EventStoreProjections/src/continuous/CallbackHandlerEnricher.js
+        asset_name: CallbackHandlerEnricher.js
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: "Callback Handler Subscription Stream Builder Projection" 
