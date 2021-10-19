@@ -16,6 +16,22 @@ module.exports = {
         };
     },
 
+    getEstateReferenceAllocatedEvent: function (estateId, reference)
+    {
+        return {
+            eventType: 'EstateReferenceAllocatedEvent',
+
+            data: {
+                "estateId": estateId,
+                "reference": reference
+            },
+            metadata: {
+
+            },
+            eventId: "5B9D9F40-8BF5-4B2A-B5FA-6A02701B9AEC"
+        };
+    },
+
     getSecurityUserAddedToEstateEvent: function (estateId, securityUserId, emailAddress) {
         return {
             eventType: 'SecurityUserAddedToEstateEvent',
@@ -615,8 +631,28 @@ module.exports = {
             },
             eventId: "6CCD33B7-07D5-4545-AD84-E0752743A5D2"
         }
-    }
+    },
 
+    getCallbackReceivedEvent: function (destination, estateReference, merchantReference)
+    {
+        var reference = estateReference + "-" + merchantReference;
+        console.log(reference);
+        return {
+            eventType: 'CallbackReceivedEvent',
 
+            data: {
+                "typeString": "CallbackHandler.Controllers.Deposit",
+                "messageFormat": 1,
+                "callbackMessage":
+                    "{\"account_number\":\"12345678\",\"amount\":100.00,\"date_time\":\"2021-10-18T06:48:00Z\",\"deposit_id\":\"5cbbcbdd-3d21-4078-b08b-3dcf607253d9\",\"host_identifier\":\"5cbbcbdd-3d21-4078-b08b-3dcf607253d9\",\"reference\":\"1-1\",\"sort_code\":\"123456\"}",
+                "destination": destination,
+                "reference": reference
+            },
+            metadata: {
+
+            },
+            eventId: "AD762308-D055-4A2F-A4AC-44CC6B0DDA40"
+        };
+    },
 
 };
