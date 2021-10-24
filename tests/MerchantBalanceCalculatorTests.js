@@ -94,6 +94,69 @@ describe('Merchant Balance Calculator Tests', function()
         chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.merchantId);
     });
 
+    it('Projection handles merchant automatic deposit event', function () {
+
+        var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';
+        var merchantName = 'Test Merchant 1';
+        var depositDateTime = '2020-05-30T06:21:31.356Z';
+        var depositAmount = 1000.00;
+        var streamName = "$ce-MerchantArchive";
+
+        var projectionState = projection.getState();
+        chai.expect(projectionState.initialised).to.be.true;
+
+        var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
+
+        projection.processEvent(
+            streamName,
+            merchantCreatedEvent.eventType,
+            merchantCreatedEvent.data,
+            null,
+            merchantCreatedEvent.eventId);
+
+        var manualDepositMadeEvent = testData.getAutomaticDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
+        projection.processEvent(
+            streamName,
+            manualDepositMadeEvent.eventType,
+            manualDepositMadeEvent.data,
+            null,
+            manualDepositMadeEvent.eventId);
+
+        var projectionState = projection.getState();
+
+        chai.expect(projectionState).to.not.be.null;
+
+        chai.expect(projectionState.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(projectionState.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
+        chai.expect(projectionState.availableBalance).to.equal(depositAmount);
+        chai.expect(projectionState.balance).to.equal(depositAmount);
+        chai.expect(projectionState.lastDepositDateTime).to.equal(depositDateTime);
+
+        var events = projection.emittedEvents;
+        chai.expect(events.length).to.equal(2);
+
+        var eventBody = JSON.parse(events[0].body);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
+        chai.expect(eventBody.balance).to.equal(0);
+        chai.expect(eventBody.changeAmount).to.equal(0);
+        chai.expect(eventBody.reference).to.equal("Opening Balance");
+        chai.expect(eventBody.eventId).to.equal(merchantId);
+        chai.expect(eventBody.aggregateId).to.equal(merchantCreatedEvent.data.merchantId);
+
+        var eventBody = JSON.parse(events[1].body);
+        console.log(eventBody);
+        chai.expect(eventBody.estateId).to.equal(merchantCreatedEvent.data.estateId);
+        chai.expect(eventBody.merchantId).to.equal(merchantCreatedEvent.data.merchantId);
+        chai.expect(eventBody.balance).to.equal(depositAmount);
+        chai.expect(eventBody.changeAmount).to.equal(depositAmount);
+        chai.expect(eventBody.reference).to.equal("Merchant Deposit");
+        chai.expect(eventBody.eventId).to.equal(manualDepositMadeEvent.eventId);
+        chai.expect(eventBody.aggregateId).to.equal(manualDepositMadeEvent.data.merchantId);
+    });
+
     it('Projection handles multiple merchant manual deposit event', function () {
         var estateId = '2af2dab2-86d6-44e3-bcf8-51bec65cf8bc';
         var merchantId = '6be48c04-a00e-4985-a50c-e27461ca47e1';

@@ -43,6 +43,11 @@ var eventbus = {
             return;
         }
 
+        if (e.eventType === 'AutomaticDepositMadeEvent') {
+            depositMadeEventHandler(s, e);
+            return;
+        }
+
         if (e.eventType === 'TransactionHasStartedEvent') {
             transactionHasStartedEventHandler(s, e);
             return;
