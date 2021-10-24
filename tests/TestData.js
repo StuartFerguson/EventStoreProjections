@@ -23,7 +23,7 @@ module.exports = {
 
             data: {
                 "estateId": estateId,
-                "reference": reference
+                "estateReference": reference
             },
             metadata: {
 
@@ -178,6 +178,23 @@ module.exports = {
             metadata: {
             },
             eventId:"4772BD21-BB70-4F46-9360-F9A6FE04C640"
+        }
+    },
+
+    getAutomaticDepositMadeEvent: function (estateId, merchantId, depositDateTime, depositAmount) {
+        return {
+            eventType: 'AutomaticDepositMadeEvent',
+            data: {
+                "amount": depositAmount,
+                "depositDateTime": depositDateTime,
+                "depositId": "ff106578-8495-afe1-1e50-6889d76065a6",
+                "estateId": estateId,
+                "merchantId": merchantId,
+                "reference": "Test Deposit from UI"
+            },
+            metadata: {
+            },
+            eventId: "4772BD21-BB70-4F46-9360-F9A6FE04C640"
         }
     },
 

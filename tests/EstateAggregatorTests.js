@@ -11,7 +11,7 @@ describe('Estate Aggregator Tests', function()
         function()
         {
             var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
-            var estateName = 'Demo Estate';
+            var estateName = 'Demo Estate 1';
             var securityUserId = 'e41e6196-4f18-4f49-bab4-ead032c1e52e';
             var emailAddress = 'estateuser@demoestate.co.uk';
             var operatorName = "Safaricom";
@@ -40,6 +40,9 @@ describe('Estate Aggregator Tests', function()
 
             var events = projection.emittedEvents;
             chai.expect(events.length).to.equal(3);
+
+            var state = projection.getState();
+            chai.expect(state.estates[estateId].name).to.equal('DemoEstate1');
         });
 
     it('Projection Can Handle Merchant Events',

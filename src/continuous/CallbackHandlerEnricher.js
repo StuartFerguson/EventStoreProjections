@@ -5,7 +5,8 @@ fromStreams("$ce-EstateAggregate", "$et-CallbackReceivedEvent")
     .when({
         $init: function (s, e) {
             return {
-                estates: []
+                estates: [],
+                debug: []
             }
         },
         "EstateCreatedEvent": function (s, e) {
@@ -14,10 +15,9 @@ fromStreams("$ce-EstateAggregate", "$et-CallbackReceivedEvent")
                 estateName: e.data.estateName
             });
         },
-        "EstateReferenceAllocatedEvent": function (s, e)
-        {
-            var estate = s.estates.find(element => element.estateId === e.data.estateId);
-            estate.reference = e.data.reference;
+        "EstateReferenceAllocatedEvent": function (s, e) {
+            var estateIndex = s.estates.findIndex(element => element.estateId === e.data.estateId);
+            s.estates[estateIndex].reference = e.data.estateReference;
         },
         "CallbackReceivedEvent": function (s, e) {
             // find the estate from the reference
@@ -26,15 +26,13 @@ fromStreams("$ce-EstateAggregate", "$et-CallbackReceivedEvent")
             }
             var ref = e.data.reference.split("-"); // Element 0 is estate reference, Element 1 is merchant reference
             var estate = s.estates.find(element => element.reference === ref[0]);
-            if (estate !== undefined && estate !== null)
-            {
+            if (estate !== undefined && estate !== null) {
                 var enrichedEvent = createEnrichedEvent(e, estate);
 
                 // Emit the enriched event
                 emit(getStreamName(estate, e), "CallbackReceivedEnrichedEvent", enrichedEvent);
             }
-            else
-            {
+            else {
                 var enrichedEvent = createEnrichedEvent(e);
                 // Emit the enriched event
                 emit(getStreamName(estate, e), "CallbackReceivedEnrichedWithNoEstateEvent", enrichedEvent);
@@ -42,11 +40,9 @@ fromStreams("$ce-EstateAggregate", "$et-CallbackReceivedEvent")
         }
     });
 
-function createEnrichedEvent(originalEvent, estate)
-{
+function createEnrichedEvent(originalEvent, estate) {
     var enrichedEvent = {};
-    if (estate !== undefined && estate !== null)
-    {
+    if (estate !== undefined && estate !== null) {
         enrichedEvent = {
             typeString: originalEvent.data.typeString,
             messageFormat: originalEvent.data.messageFormat,
@@ -55,8 +51,7 @@ function createEnrichedEvent(originalEvent, estate)
             reference: originalEvent.data.reference
         };
     }
-    else
-    {
+    else {
         enrichedEvent = {
             typeString: originalEvent.data.typeString,
             messageFormat: originalEvent.data.messageFormat,
@@ -75,12 +70,10 @@ function getStreamName(estate, e) {
     }
 
     // Add the estate name
-    if (estate !== undefined && estate !== null)
-    {
-            streamName += estate.estateName.replace(" ", "");
-        }
-    else
-    {
+    if (estate !== undefined && estate !== null) {
+        streamName += estate.estateName.replace(/ /g, "");
+    }
+    else {
         streamName += "UnknownEstate";
     }
 
