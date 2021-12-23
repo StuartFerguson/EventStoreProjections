@@ -39,6 +39,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\continuous\EstateAggregator.js" />
+    <Content Include="src\continuous\EstateManagementSubscriptionStreamBuilder.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\continuous\FileProcessorSubscriptionStreamBuilder.js" />
     <Content Include="src\continuous\MerchantAggregator.js" />
     <Content Include="src\continuous\MerchantBalanceCalculator.js" />
@@ -50,6 +53,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="tests\EstateAggregatorTests.js" />
+    <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="tests\FileProcessorSubscriptionStreamBuilderTests.js">
       <SubType>Code</SubType>
     </Content>
