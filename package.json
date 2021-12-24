@@ -7,13 +7,13 @@
     "name": ""
   },
   "dependencies": {
-    "chai": "^4.2.0",
-    "mocha-isolation": "^0.1.5",
+    "tape": "5.3.2",
+    "tape-describe": "1.0.3",
+    "@small-tech/esm-tape-runner": "1.0.3",
     "@transactionprocessing/esprojection-testing-framework": "1.0.1"
   },
   "scripts": {
     "run": "node app.js",
-    "watch": "mocha --recursive -R min --watch",
-    "test": "mocha --require mocha-isolation --full-trace 'tests/**/*.js' --recursive"
+    "test": "esm-tape-runner tests/**/*.js"
   }
 }

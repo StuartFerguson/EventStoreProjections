@@ -4,7 +4,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>EventStoreProjections.Tests</Name>
     <RootNamespace>EventStoreProjections.Tests</RootNamespace>
-    <JavaScriptTestFramework>mocha</JavaScriptTestFramework>
+    <JavaScriptTestFramework>Tape</JavaScriptTestFramework>
     <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
     <JavaScriptTestRoot>tests\</JavaScriptTestRoot>
   </PropertyGroup>
@@ -53,17 +53,6 @@
     <Content Include="tests\CallbackHandlerEnricherTests.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="tests\EstateAggregatorTests.js" />
-    <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="tests\FileProcessorSubscriptionStreamBuilderTests.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="tests\MerchantAggregatorTests.js" />
-    <Content Include="tests\MerchantBalanceCalculatorTests.js">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="node_modules\mocha-isolation\LICENSE" />
     <Content Include="node_modules\mocha-isolation\package.json" />
     <Content Include="node_modules\mocha-isolation\README.md" />
@@ -77,13 +66,14 @@
     <Content Include="node_modules\mocha-isolation\src\mocha-opts.js" />
     <Content Include="node_modules\mocha-isolation\src\mocha-reporter.js" />
     <Content Include="package.json" />
-    <Content Include="tests\TestData.js">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="tests\EstateAggregatorTests.js" />
+    <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js" />
+    <Content Include="tests\FileProcessorSubscriptionStreamBuilderTests.js" />
+    <Content Include="tests\MerchantAggregatorTests.js" />
+    <Content Include="tests\MerchantBalanceCalculatorTests.js" />
+    <Content Include="tests\TestData.js" />
     <Content Include="tests\TransactionEnricherTests.js" />
-    <Content Include="tests\TransactionProcessorSubscriptionStreamBuilderTests.js">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="tests\TransactionProcessorSubscriptionStreamBuilderTests.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="src\" />

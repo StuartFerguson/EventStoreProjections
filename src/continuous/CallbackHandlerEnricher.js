@@ -3,7 +3,8 @@ var emit = emit || require('../../node_modules/@transactionprocessing/esprojecti
 
 fromStreams("$ce-EstateAggregate", "$et-CallbackReceivedEvent")
     .when({
-        $init: function (s, e) {
+        $init: function (s, e)
+        {
             return {
                 estates: [],
                 debug: []

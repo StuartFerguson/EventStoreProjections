@@ -1,107 +1,128 @@
-var chai = require('chai');
 require('../src/continuous/CallbackHandlerEnricher.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
 var testData = require('./TestData.js');
+var describe = require('tape-describe');
+var test = describe('Callback Handler Enricher Tests');
 
-describe('Callback Handler Enricher Tests', function()
-{
-    beforeEach(function() { projection.initialize(); });
+test('Projection Can Handle Estate Events',
+    t =>
+    {
+        projection.initialize();
 
-    it('Projection Can Handle Estate Events',
-        function()
-        {
-            var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
-            var estateName = 'Demo Estate';
-            var reference = "1";
+        projection.setState({
+            estates: [],
+            debug: []
+        });
 
-            var estateCreatedEvent = testData.getEstateCreatedEvent(estateId, estateName);
+        var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var estateName = 'Demo Estate';
+        var reference = "1";
 
-            projection.processEvent(
-                'EstateAggregate-' + estateId.replace(/-/gi, ""),
-                estateCreatedEvent.eventType,
-                estateCreatedEvent.data);
+        var estateCreatedEvent = testData.getEstateCreatedEvent(estateId, estateName);
 
-            var estateReferenceAllocatedEvent = testData.getEstateReferenceAllocatedEvent(estateId, reference);
-            projection.processEvent(
-                'EstateAggregate-' + estateId.replace(/-/gi, ""),
-                estateReferenceAllocatedEvent.eventType,
-                estateReferenceAllocatedEvent.data);
+        projection.processEvent(
+            'EstateAggregate-' + estateId.replace(/-/gi, ""),
+            estateCreatedEvent.eventType,
+            estateCreatedEvent.data);
 
-            var projectionState = projection.getState();
+        var estateReferenceAllocatedEvent = testData.getEstateReferenceAllocatedEvent(estateId, reference);
+        projection.processEvent(
+            'EstateAggregate-' + estateId.replace(/-/gi, ""),
+            estateReferenceAllocatedEvent.eventType,
+            estateReferenceAllocatedEvent.data);
 
-            chai.expect(projectionState).to.not.be.null;
-            chai.expect(projectionState.estates).to.not.be.null;
-            chai.expect(projectionState.estates.length).to.equal(1);
-            chai.expect(projectionState.estates[0].estateId).to.equal(estateId);
-            chai.expect(projectionState.estates[0].reference).to.equal(reference);
-        }
-    );
+        var projectionState = projection.getState();
 
-    it('Projection Can Handle Callback Received Event after Estate Created',
-        function () {
-            var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
-            var estateName = 'Demo Estate';
-            var reference = "1";
+        t.notEqual(projectionState, null);
+        t.notEqual(projectionState.estates, null);
+        t.equal(projectionState.estates.length, 1);
+        t.equal(projectionState.estates[0].estateId, estateId);
+        t.equal(projectionState.estates[0].reference, reference);
 
-            var estateCreatedEvent = testData.getEstateCreatedEvent(estateId, estateName);
+        t.end();
+    });
 
-            projection.processEvent(
-                'EstateAggregate-' + estateId.replace(/-/gi, ""),
-                estateCreatedEvent.eventType,
-                estateCreatedEvent.data);
+test('Projection Can Handle Callback Received Event after Estate Created',
+    t =>
+    {
+        projection.initialize();
 
-            var estateReferenceAllocatedEvent = testData.getEstateReferenceAllocatedEvent(estateId, reference);
-            projection.processEvent(
-                'EstateAggregate-' + estateId.replace(/-/gi, ""),
-                estateReferenceAllocatedEvent.eventType,
-                estateReferenceAllocatedEvent.data);
+        projection.setState({
+            estates: [],
+            debug: []
+        });
 
-            var projectionState = projection.getState();
+        var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var estateName = 'Demo Estate';
+        var reference = "1";
 
-            chai.expect(projectionState).to.not.be.null;
-            chai.expect(projectionState.estates).to.not.be.null;
-            chai.expect(projectionState.estates.length).to.equal(1);
+        var estateCreatedEvent = testData.getEstateCreatedEvent(estateId, estateName);
 
-            var destination = "EstateManagement";
-            var estateReference = "1";
-            var merchantReference = "1";
-            var callbackReceivedEvent = testData.getCallbackReceivedEvent(destination, estateReference, merchantReference);
+        projection.processEvent(
+            'EstateAggregate-' + estateId.replace(/-/gi, ""),
+            estateCreatedEvent.eventType,
+            estateCreatedEvent.data);
 
-            projection.processEvent(
-                "$et-CallbackReceivedEvent",
-                callbackReceivedEvent.eventType,
-                callbackReceivedEvent.data);
+        var estateReferenceAllocatedEvent = testData.getEstateReferenceAllocatedEvent(estateId, reference);
+        projection.processEvent(
+            'EstateAggregate-' + estateId.replace(/-/gi, ""),
+            estateReferenceAllocatedEvent.eventType,
+            estateReferenceAllocatedEvent.data);
 
-            var events = projection.emittedEvents;
-            chai.expect(events.length).to.equal(1);
-            
-            var eventBody = JSON.parse(events[0].body);
-            chai.expect(eventBody.estateId).to.equal(estateId);
-            chai.expect(events[0].streamId).to.equal(destination + "SubscriptionStream_" + estateName.replace(" ", ""));
-            chai.expect(events[0].eventName).to.equal("CallbackReceivedEnrichedEvent");
-        }
-    );
+        var projectionState = projection.getState();
 
-    it('Projection Can Handle Callback Received Event before Estate Created',
-        function () {
-            
-            var destination = "EstateManagement";
-            var estateReference = "1";
-            var merchantReference = "1";
-            var callbackReceivedEvent = testData.getCallbackReceivedEvent(destination, estateReference, merchantReference);
+        t.notEqual(projectionState, null);
+        t.notEqual(projectionState.estates, null);
+        t.equal(projectionState.estates.length, 1);
 
-            projection.processEvent(
-                "$et-CallbackReceivedEvent",
-                callbackReceivedEvent.eventType,
-                callbackReceivedEvent.data);
+        var destination = "EstateManagement";
+        var estateReference = "1";
+        var merchantReference = "1";
+        var callbackReceivedEvent = testData.getCallbackReceivedEvent(destination, estateReference, merchantReference);
 
-            var events = projection.emittedEvents;
-            chai.expect(events.length).to.equal(1);
-            
-            var eventBody = JSON.parse(events[0].body);
-            chai.expect(eventBody.estateId).to.be.undefined;
-            chai.expect(events[0].streamId).to.equal(destination + "SubscriptionStream_UnknownEstate");
-            chai.expect(events[0].eventName).to.equal("CallbackReceivedEnrichedWithNoEstateEvent");
-        }
-    );
-});
+        projection.processEvent(
+            "$et-CallbackReceivedEvent",
+            callbackReceivedEvent.eventType,
+            callbackReceivedEvent.data);
+
+        var events = projection.emittedEvents;
+        t.equal(events.length, 1);
+
+        var eventBody = JSON.parse(events[0].body);
+        t.equal(eventBody.estateId, estateId);
+        t.equal(events[0].streamId, destination + "SubscriptionStream_" + estateName.replace(" ", ""));
+        t.equal(events[0].eventName, "CallbackReceivedEnrichedEvent");
+
+        t.end();
+    });
+
+test('Projection Can Handle Callback Received Event before Estate Created',
+    t =>
+    {
+        projection.initialize();
+
+        projection.setState({
+            estates: [],
+            debug: []
+        });
+
+        var destination = "EstateManagement";
+        var estateReference = "1";
+        var merchantReference = "1";
+        var callbackReceivedEvent =
+            testData.getCallbackReceivedEvent(destination, estateReference, merchantReference);
+
+        projection.processEvent(
+            "$et-CallbackReceivedEvent",
+            callbackReceivedEvent.eventType,
+            callbackReceivedEvent.data);
+
+        var events = projection.emittedEvents;
+        t.equal(events.length, 1);
+        var eventBody = JSON.parse(events[0].body);
+
+        t.equal(eventBody.estateId, undefined);
+        t.equal(events[0].streamId, destination + "SubscriptionStream_UnknownEstate");
+        t.equal(events[0].eventName, "CallbackReceivedEnrichedWithNoEstateEvent");
+        t.end();
+    });
