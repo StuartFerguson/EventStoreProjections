@@ -1,18 +1,18 @@
-var chai = require('chai');
 require('../src/continuous/MerchantAggregator.js');
-var projection = require('esprojection-testing-framework');
+var projection = require('@transactionprocessing/esprojection-testing-framework');
 var testData = require('./TestData.js');
+var describe = require('tape-describe');
+var test = describe('Merchant Aggregator Tests');
 
-describe('Merchant Aggregator Tests', function()
-{
-    beforeEach(function() { projection.initialize(); });
-
-    it('Projection Can Handle Merchant Events', function()
+test('Projection Can Handle Merchant Events',
+    t =>
     {
+        projection.initialize();
+
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
         var merchantId = 'c4c33d75-f011-40e4-9d97-1f428ab563d8';
         var merchantName = 'Test Merchant 1';
-        
+
         // Set up the merchant events
         var merchantCreatedEvent = testData.getMerchantCreatedEvent(estateId, merchantId, merchantName);
         var addressAddedEvent = testData.getAddressAddedEvent(estateId, merchantId);
@@ -41,8 +41,9 @@ describe('Merchant Aggregator Tests', function()
 
         var depositDateTime = '2020-05-30T06:21:31.356Z';
         var depositAmount = 1000.00;
-        var manualDepositMadeEvent = testData.getManualDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
-        
+        var manualDepositMadeEvent =
+            testData.getManualDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
         projection.processEvent(
             'MerchantAggregate-' + merchantId.replace(/-/gi, ""),
             merchantCreatedEvent.eventType,
@@ -73,23 +74,36 @@ describe('Merchant Aggregator Tests', function()
             manualDepositMadeEvent.data);
 
         var events = projection.emittedEvents;
-        chai.expect(events.length).to.equal(7);
+        t.equal(events.length, 7);
+        t.end();
     });
 
-    it('Projection Can Handle Transaction Events', function()
+test('Projection Can Handle Transaction Events',
+    t =>
     {
+        projection.initialize();
+
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
         var merchantId = 'c4c33d75-f011-40e4-9d97-1f428ab563d8';
         var transactionId = 'c4c33d75-f011-40e4-9d97-1f428ab563d8';
         var transactionAmount = 100.00;
         var transactionType = 'Sale';
 
-        var transactionHasStartedEvent = testData.getTransactionHasStartedEvent(estateId, merchantId, transactionId, transactionAmount, transactionType);
+        var transactionHasStartedEvent = testData.getTransactionHasStartedEvent(estateId,
+            merchantId,
+            transactionId,
+            transactionAmount,
+            transactionType);
 
         var contractId = '327678c4-d349-4e1c-b466-f2ea4b0e869b';
         var productId = '001b29c9-91f5-42f9-95d0-6fd9d69a2e18';
 
-        var productDetailsAddedToTransactionEvent = testData.getProductDetailsAddedToTransactionEvent(estateId, merchantId, transactionId, contractId, productId);
+        var productDetailsAddedToTransactionEvent =
+            testData.getProductDetailsAddedToTransactionEvent(estateId,
+                merchantId,
+                transactionId,
+                contractId,
+                productId);
 
         var customerAccountNumber = "1234567890";
         var additionalRequestDataRecordedEvent = testData.getAdditionalRequestDataRecordedEvent(estateId,
@@ -98,19 +112,28 @@ describe('Merchant Aggregator Tests', function()
             transactionAmount,
             customerAccountNumber);
 
-        var transactionHasBeenLocallyAuthorisedEvent = testData.getTransactionHasBeenLocallyAuthorisedEvent(estateId, merchantId, transactionId);
+        var transactionHasBeenLocallyAuthorisedEvent =
+            testData.getTransactionHasBeenLocallyAuthorisedEvent(estateId, merchantId, transactionId);
 
-        var transactionHasBeenLocallyDeclinedEvent = testData.getTransactionHasBeenLocallyDeclinedEvent(estateId, merchantId, transactionId);
+        var transactionHasBeenLocallyDeclinedEvent =
+            testData.getTransactionHasBeenLocallyDeclinedEvent(estateId, merchantId, transactionId);
 
-        var transactionAuthorisedByOperatorEvent = testData.getTransactionAuthorisedByOperatorEvent(estateId, merchantId, transactionId);
+        var transactionAuthorisedByOperatorEvent =
+            testData.getTransactionAuthorisedByOperatorEvent(estateId, merchantId, transactionId);
 
-        var transactionDeclinedByOperatorEvent = testData.getTransactionDeclinedByOperatorEvent(estateId, merchantId, transactionId);
+        var transactionDeclinedByOperatorEvent =
+            testData.getTransactionDeclinedByOperatorEvent(estateId, merchantId, transactionId);
 
-        var transactionHasBeenCompletedEvent = testData.getTransactionHasBeenCompletedEvent(estateId, merchantId, transactionId, true);
+        var transactionHasBeenCompletedEvent =
+            testData.getTransactionHasBeenCompletedEvent(estateId, merchantId, transactionId, true);
 
         var calculatedValue = 5.00;
         var eventCreatedDateTime = "2020-05-16T07:47:51.6617562+00:00";
-        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId, merchantId, transactionId, calculatedValue, eventCreatedDateTime);
+        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId,
+            merchantId,
+            transactionId,
+            calculatedValue,
+            eventCreatedDateTime);
 
         projection.processEvent(
             'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
@@ -158,6 +181,6 @@ describe('Merchant Aggregator Tests', function()
             merchantFeeAddedToTransactionEvent.data);
 
         var events = projection.emittedEvents;
-        chai.expect(events.length).to.equal(9);
+        t.equal(events.length, 9);
+        t.end();
     });
-});

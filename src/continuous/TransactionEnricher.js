@@ -1,7 +1,6 @@
-var fromCategory = fromCategory || require('../../node_modules/esprojection-testing-framework').scope.fromCategory;
-//var partitionBy = partitionBy !== null ? partitionBy : require('../../node_modules/event-store-projection-testing').scope.partitionBy;
-var emit = emit || require('../../node_modules/esprojection-testing-framework').scope.emit;
-var linkTo = linkTo || require("../../node_modules/esprojection-testing-framework").scope.linkTo;
+var fromCategory = fromCategory || require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.fromCategory;
+var emit = emit || require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.emit;
+var linkTo = linkTo || require("../../node_modules/@transactionprocessing/esprojection-testing-framework").scope.linkTo;
 
 fromCategory('TransactionAggregate')
     .foreachStream()

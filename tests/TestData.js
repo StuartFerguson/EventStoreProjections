@@ -672,4 +672,33 @@ module.exports = {
         };
     },
 
+    getMerchantFeeSettledEvent: function (estateId, merchantId, transactionId, settlementId)
+    {
+        return {
+            eventType: 'MerchantFeeSettledEvent',
+            data: {
+                "calculatedValue": 0.57,
+                "estateId": estateId,
+                "feeId": "79af0f78-9150-4ce8-ba02-c37dd74f8191",
+                "feeValue": 0.5,
+                "merchantId": merchantId,
+                "transactionId": transactionId,
+                "settlementId": settlementId
+            }
+        }
+    },
+
+    getStatementGeneratedEvent: function (estateId, merchantId, merchantStatementId)
+    {
+        return {
+            eventType: "StatementGeneratedEvent",
+            data: {
+                "dateGenerated": "2021-12-22T14:56:39.0234835+00:00",
+                "estateId": estateId,
+                "merchantId": merchantId,
+                "merchantStatementId": merchantStatementId
+
+            }
+        }
+    }
 };
