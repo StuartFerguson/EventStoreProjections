@@ -1,6 +1,6 @@
 var chai = require('chai');
 require('../src/continuous/TransactionProcessorSubscriptionStreamBuilder.js');
-var projection = require('esprojection-testing-framework');
+var projection = require('@transactionprocessing/esprojection-testing-framework');
 var testData = require('./TestData.js');
 
 describe('Transaction Processor Subscription Stream Builder Tests', function()

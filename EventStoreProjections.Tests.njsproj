@@ -35,6 +35,7 @@
     <Content Include="app.js">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="libman.json" />
     <Content Include="src\continuous\CallbackHandlerEnricher.js">
       <SubType>Code</SubType>
     </Content>

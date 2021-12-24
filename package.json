@@ -9,7 +9,7 @@
   "dependencies": {
     "chai": "^4.2.0",
     "mocha-isolation": "^0.1.5",
-    "esprojection-testing-framework": "1.0.0"
+    "@transactionprocessing/esprojection-testing-framework": "1.0.1"
   },
   "scripts": {
     "run": "node app.js",

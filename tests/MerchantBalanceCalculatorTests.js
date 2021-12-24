@@ -1,6 +1,6 @@
 var chai = require('chai');
 require('../src/continuous/MerchantBalanceCalculator.js');
-var projection = require('esprojection-testing-framework');
+var projection = require('@transactionprocessing/esprojection-testing-framework');
 var testData = require('./TestData.js');
 
 describe('Merchant Balance Calculator Tests', function()
