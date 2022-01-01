@@ -8,7 +8,7 @@ jobs:
   build:
     name: "Release"
     env:
-      NODE_VERSION: '12.x'                # set this to the node version to use
+      NODE_VERSION: '14.x'                # set this to the node version to use
 
     runs-on: ubuntu-latest
 
@@ -20,6 +20,9 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
     
+    - name: Update npm
+      run: |
+        npm install npm@latest
     - name: Run Unit Tests
       run: |
         npm install
