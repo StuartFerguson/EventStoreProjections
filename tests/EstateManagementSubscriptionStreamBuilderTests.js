@@ -12,8 +12,8 @@ test('Projection Can Handle Estate Created Event',
         projection.setState({ estates: {} });
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
-        var estateName = 'Demo Estate';
-        var estateNameNoSpaces = 'DemoEstate';
+        var estateName = 'Demo Estate 1';
+        var estateNameNoSpaces = 'DemoEstate1';
 
         var estateCreatedEvent = testData.getEstateCreatedEvent(estateId, estateName);
 
