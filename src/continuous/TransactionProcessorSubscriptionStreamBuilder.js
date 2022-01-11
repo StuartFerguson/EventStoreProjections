@@ -36,6 +36,8 @@ getStreamName = function (estateName) {
     return 'TransactionProcessorSubscriptionStream_' + estateName;
 }
 
+getStringWithNoSpaces = function (inputString) { return inputString.replace(/-/gi, "").replace(/ /g, ""); }
+
 fromAll()
     .when({
         $init: function (s, e) {
@@ -49,7 +51,7 @@ fromAll()
                 if (isAnEstateCreatedEvent(e)) {
                     s.estates[e.data.estateId] = {
                         filteredName: e.data.estateName.replace(/-/gi, ""),
-                        name: e.data.estateName.replace(/-/gi, "").replace(" ", "")
+                        name: getStringWithNoSpaces(e.data.estateName)
                     };
                 }
 
