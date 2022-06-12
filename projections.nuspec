@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>EventStoreProjections</id>
+        <version>$version$</version>
+        <authors>Transaction Processing</authors>
+        <owners></owners>
+        <description>Transaction Processing Eventstore Projections</description>
+        <projectUrl>https://github.com/TransactionProcessing/EventStoreProjections</projectUrl>
+        <licenseUrl>https://github.com/TransactionProcessing/EventStoreProjections</licenseUrl>
+        <tags></tags>
+  </metadata>
+  <files>
+      <file src="src/continuous/CallbackHandlerEnricher.js" target="projections\continuous" />
+      <file src="src/continuous/EstateAggregator.js" target="projections\continuous" />
+      <file src="src/continuous/EstateManagementSubscriptionStreamBuilder.js" target="projections\continuous" />
+      <file src="src/continuous/FileProcessorSubscriptionStreamBuilder.js" target="projections\continuous" />
+      <file src="src/continuous/MerchantAggregator.js" target="projections\continuous" />
+      <file src="src/continuous/MerchantBalanceCalculator.js" target="projections\continuous" />
+      <file src="src/continuous/TransactionEnricher.js" target="projections\continuous" />
+      <file src="src/continuous/TransactionProcessorSubscriptionStreamBuilder.js" target="projections\continuous" />
+  </files>
+</package>
