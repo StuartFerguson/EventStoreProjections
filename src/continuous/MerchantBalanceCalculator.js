@@ -1,6 +1,8 @@
+//starttestsetup
 var fromCategory = fromCategory || require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.fromCategory;
 var partitionBy = partitionBy !== null ? partitionBy : require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.partitionBy;
 var emit = emit || require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.emit;
+//endtestsetup
 
 fromCategory('MerchantArchive')
     .foreachStream()
@@ -184,8 +186,7 @@ var depositMadeEventHandler = function (s, e) {
     incrementBalanceFromDeposit(s, e.data.amount, e.data.depositDateTime);
 
     // emit an balance changed event here
-    console.log(e);
-    s = emitBalanceChangedEvent(e.data.merchantId, e.eventId, s, e.data.amount, e.data.depositDateTime, "Merchant Deposit");
+    emitBalanceChangedEvent(e.data.merchantId, e.eventId, s, e.data.amount, e.data.depositDateTime, "Merchant Deposit");
 };
 
 var transactionHasStartedEventHandler = function (s, e) {
