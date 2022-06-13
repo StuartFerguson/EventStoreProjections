@@ -25,6 +25,7 @@ jobs:
         npm install npm@latest
     - name: Run Unit Tests
       run: |
+        cd EventStoreProjections
         npm install
         npm run test
 
