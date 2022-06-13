@@ -9,15 +9,11 @@
         <projectUrl>https://github.com/TransactionProcessing/EventStoreProjections</projectUrl>
         <licenseUrl>https://github.com/TransactionProcessing/EventStoreProjections</licenseUrl>
         <tags></tags>
+        <contentFiles>
+	      <files include="src/continuous/*.js" buildAction="None"  copyToOutput="true"/>
+  	</contentFiles>
   </metadata>
   <files>
-      <file src="src/continuous/CallbackHandlerEnricher.js" target="projections\continuous" />
-      <file src="src/continuous/EstateAggregator.js" target="projections\continuous" />
-      <file src="src/continuous/EstateManagementSubscriptionStreamBuilder.js" target="projections\continuous" />
-      <file src="src/continuous/FileProcessorSubscriptionStreamBuilder.js" target="projections\continuous" />
-      <file src="src/continuous/MerchantAggregator.js" target="projections\continuous" />
-      <file src="src/continuous/MerchantBalanceCalculator.js" target="projections\continuous" />
-      <file src="src/continuous/TransactionEnricher.js" target="projections\continuous" />
-      <file src="src/continuous/TransactionProcessorSubscriptionStreamBuilder.js" target="projections\continuous" />
+      <file src="contentFiles\**" target="projections\continuous" />      
   </files>
 </package>
