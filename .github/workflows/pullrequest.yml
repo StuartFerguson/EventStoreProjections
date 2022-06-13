@@ -26,6 +26,7 @@ jobs:
 
     - name: Run Unit Tests
       run: |
+        cd EventStoreProjections
         npm install
         npm run test
         

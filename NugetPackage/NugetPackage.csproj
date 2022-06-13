@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <PackageId>EventStoreProjections</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="projections\continuous\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\EventStoreProjections\src\continuous\CallbackHandlerEnricher.js" Link="projections\continuous\CallbackHandlerEnricher.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\EstateAggregator.js" Link="projections\continuous\EstateAggregator.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\EstateManagementSubscriptionStreamBuilder.js" Link="projections\continuous\EstateManagementSubscriptionStreamBuilder.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\FileProcessorSubscriptionStreamBuilder.js" Link="projections\continuous\FileProcessorSubscriptionStreamBuilder.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\MerchantAggregator.js" Link="projections\continuous\MerchantAggregator.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\MerchantBalanceCalculator.js" Link="projections\continuous\MerchantBalanceCalculator.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\TransactionEnricher.js" Link="projections\continuous\TransactionEnricher.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\EventStoreProjections\src\continuous\TransactionProcessorSubscriptionStreamBuilder.js" Link="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
