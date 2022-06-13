@@ -14,6 +14,6 @@
   	</contentFiles>
   </metadata>
   <files>
-      <file src="contentFiles\**" target="projections\continuous" />      
+      <file src="src\continuous\**" target="projections\continuous" />      
   </files>
 </package>
