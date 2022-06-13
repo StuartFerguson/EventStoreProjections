@@ -1,6 +1,6 @@
 //starttestsetup
-var fromAll = fromAll || require("../../node_modules/@transactionprocessing/esprojection-testing-framework").scope.fromAll;
-var linkTo = linkTo || require("../../node_modules/@transactionprocessing/esprojection-testing-framework").scope.linkTo;
+var fromAll = fromAll || require("../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework").scope.fromAll;
+var linkTo = linkTo || require("../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework").scope.linkTo;
 //endtestsetup
 
 isEstateEvent = (e) => { return (e.data && e.data.estateId); }
@@ -11,14 +11,9 @@ isInvalidEvent = (e) => (e === null || e === undefined || e.data === undefined);
 getSupportedEventTypes = function () {
     var eventTypes = [];
 
-    eventTypes.push('ImportLogCreatedEvent');
-    eventTypes.push('FileAddedToImportLogEvent');
-    eventTypes.push('FileCreatedEvent');
-    eventTypes.push('FileLineAddedEvent');
-    eventTypes.push('FileLineProcessingSuccessfulEvent');
-    eventTypes.push('FileLineProcessingIgnoredEvent');
-    eventTypes.push('FileLineProcessingFailedEvent');
-    eventTypes.push('FileProcessingCompletedEvent');
+    eventTypes.push('CustomerEmailReceiptRequestedEvent');
+    eventTypes.push('TransactionHasBeenCompletedEvent');
+    eventTypes.push('MerchantFeeAddedToTransactionEvent');
 
     return eventTypes;
 }
@@ -28,7 +23,7 @@ isARequiredEvent = (e) => {
 
     var index = supportedEvents.indexOf(e.eventType);
 
-    return index !== -1
+    return index !== -1;
 };
 
 isTruncated = function (metadata) {
@@ -41,7 +36,7 @@ isTruncated = function (metadata) {
     return false;
 };
 getStreamName = function (estateName) {
-    return 'FileProcessorSubscriptionStream_' + estateName;
+    return 'TransactionProcessorSubscriptionStream_' + estateName;
 }
 
 getStringWithNoSpaces = function (inputString) { return inputString.replace(/-/gi, "").replace(/ /g, ""); }

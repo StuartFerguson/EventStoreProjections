@@ -10,28 +10,28 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\EventStoreProjections\src\continuous\CallbackHandlerEnricher.js" Link="projections\continuous\CallbackHandlerEnricher.js">
+    <None Include="projections\continuous\CallbackHandlerEnricher.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\EstateAggregator.js" Link="projections\continuous\EstateAggregator.js">
+    <None Include="projections\continuous\EstateAggregator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\EstateManagementSubscriptionStreamBuilder.js" Link="projections\continuous\EstateManagementSubscriptionStreamBuilder.js">
+    <None Include="projections\continuous\EstateManagementSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\FileProcessorSubscriptionStreamBuilder.js" Link="projections\continuous\FileProcessorSubscriptionStreamBuilder.js">
+    <None Include="projections\continuous\FileProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\MerchantAggregator.js" Link="projections\continuous\MerchantAggregator.js">
+    <None Include="projections\continuous\MerchantAggregator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\MerchantBalanceCalculator.js" Link="projections\continuous\MerchantBalanceCalculator.js">
+    <None Include="projections\continuous\MerchantBalanceCalculator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\TransactionEnricher.js" Link="projections\continuous\TransactionEnricher.js">
+    <None Include="projections\\continuous\TransactionEnricher.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="..\EventStoreProjections\src\continuous\TransactionProcessorSubscriptionStreamBuilder.js" Link="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
+    <None Include="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

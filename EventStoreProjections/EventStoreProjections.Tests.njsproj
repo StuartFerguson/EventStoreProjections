@@ -36,35 +36,9 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="libman.json" />
-    <Content Include="src\continuous\CallbackHandlerEnricher.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\continuous\EstateAggregator.js" />
-    <Content Include="src\continuous\EstateManagementSubscriptionStreamBuilder.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="src\continuous\FileProcessorSubscriptionStreamBuilder.js" />
-    <Content Include="src\continuous\MerchantAggregator.js" />
-    <Content Include="src\continuous\MerchantBalanceCalculator.js" />
-    <Content Include="src\continuous\TransactionEnricher.js" />
-    <Content Include="src\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
-      <SubType>Code</SubType>
-    </Content>
     <Content Include="tests\CallbackHandlerEnricherTests.js">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="node_modules\mocha-isolation\LICENSE" />
-    <Content Include="node_modules\mocha-isolation\package.json" />
-    <Content Include="node_modules\mocha-isolation\README.md" />
-    <Content Include="node_modules\mocha-isolation\register.js" />
-    <Content Include="node_modules\mocha-isolation\src\child-host.js" />
-    <Content Include="node_modules\mocha-isolation\src\child-runner.js" />
-    <Content Include="node_modules\mocha-isolation\src\child-tracker.js" />
-    <Content Include="node_modules\mocha-isolation\src\common-util.js" />
-    <Content Include="node_modules\mocha-isolation\src\debug-output.js" />
-    <Content Include="node_modules\mocha-isolation\src\mocha-hook.js" />
-    <Content Include="node_modules\mocha-isolation\src\mocha-opts.js" />
-    <Content Include="node_modules\mocha-isolation\src\mocha-reporter.js" />
     <Content Include="package.json" />
     <Content Include="tests\EstateAggregatorTests.js" />
     <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js" />
@@ -76,12 +50,8 @@
     <Content Include="tests\TransactionProcessorSubscriptionStreamBuilderTests.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="src\" />
     <Folder Include="node_modules\" />
-    <Folder Include="src\continuous\" />
     <Folder Include="tests\" />
-    <Folder Include="node_modules\mocha-isolation\" />
-    <Folder Include="node_modules\mocha-isolation\src\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

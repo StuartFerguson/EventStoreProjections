@@ -1,7 +1,7 @@
 //starttestsetup
-var fromCategory = fromCategory || require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.fromCategory;
-var partitionBy = partitionBy !== null ? partitionBy : require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.partitionBy;
-var emit = emit || require('../../node_modules/@transactionprocessing/esprojection-testing-framework').scope.emit;
+var fromCategory = fromCategory || require('../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework').scope.fromCategory;
+var partitionBy = partitionBy !== null ? partitionBy : require('../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework').scope.partitionBy;
+var emit = emit || require('../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework').scope.emit;
 //endtestsetup
 
 fromCategory('MerchantArchive')

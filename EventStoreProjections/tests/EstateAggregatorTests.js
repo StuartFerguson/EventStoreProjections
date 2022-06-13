@@ -1,4 +1,4 @@
-require('../src/continuous/EstateAggregator.js');
+require('../../NugetPackage/projections/continuous/EstateAggregator.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
 var testData = require('./TestData.js');
 var describe = require('tape-describe');

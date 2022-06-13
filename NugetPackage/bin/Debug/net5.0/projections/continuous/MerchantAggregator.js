@@ -1,6 +1,6 @@
 //starttestsetup
-var fromAll = fromAll || require("../../node_modules/@transactionprocessing/esprojection-testing-framework").scope.fromAll;
-var linkTo = linkTo || require("../../node_modules/@transactionprocessing/esprojection-testing-framework").scope.linkTo;
+var fromAll = fromAll || require("../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework").scope.fromAll;
+var linkTo = linkTo || require("../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework").scope.linkTo;
 //endtestsetup
 
 isValidEvent = function (e) {

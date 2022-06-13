@@ -1,4 +1,4 @@
-require('../src/continuous/TransactionEnricher.js');
+require('../../NugetPackage/projections/continuous/TransactionEnricher.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
 var testData = require('./TestData.js');
 var describe = require('tape-describe');
