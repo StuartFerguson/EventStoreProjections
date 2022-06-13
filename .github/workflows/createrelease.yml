@@ -35,4 +35,4 @@ jobs:
     - name: Build the nuget package
       run: |
         nuget pack projections.nuspec -Version ${{ steps.get_version.outputs.VERSION }}
-        nuget push *.nupkg -ApiKey ${{ secrets.MYGET_APIKEY }} -Source https://www.myget.org/F/transactionprocessing/api/v2/package
+        nuget push EventStoreProjections.${{ steps.get_version.outputs.VERSION }}.nupkg -ApiKey ${{ secrets.MYGET_APIKEY }} -Source https://www.myget.org/F/transactionprocessing/api/v2/package
