@@ -6,34 +6,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="projections\continuous\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="projections\continuous\CallbackHandlerEnricher.js">
+    <Content Include="projections\continuous\CallbackHandlerEnricher.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\continuous\EstateAggregator.js">
+    </Content>
+    <Content Include="projections\continuous\EstateAggregator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\continuous\EstateManagementSubscriptionStreamBuilder.js">
+    </Content>
+    <Content Include="projections\continuous\EstateManagementSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\continuous\FileProcessorSubscriptionStreamBuilder.js">
+    </Content>
+    <Content Include="projections\continuous\FileProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\continuous\MerchantAggregator.js">
+    </Content>
+    <Content Include="projections\continuous\MerchantAggregator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\continuous\MerchantBalanceCalculator.js">
+    </Content>
+    <Content Include="projections\continuous\MerchantBalanceCalculator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\\continuous\TransactionEnricher.js">
+    </Content>
+    <Content Include="projections\\continuous\TransactionEnricher.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
+    </Content>
+    <Content Include="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
 
 </Project>
