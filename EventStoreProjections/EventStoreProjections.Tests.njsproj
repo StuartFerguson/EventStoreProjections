@@ -44,9 +44,7 @@
     <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js" />
     <Content Include="tests\FileProcessorSubscriptionStreamBuilderTests.js" />
     <Content Include="tests\MerchantAggregatorTests.js" />
-    <Content Include="tests\MerchantBalanceCalculatorTests.js" />
     <Content Include="tests\TestData.js" />
-    <Content Include="tests\TransactionEnricherTests.js" />
     <Content Include="tests\TransactionProcessorSubscriptionStreamBuilderTests.js" />
   </ItemGroup>
   <ItemGroup>

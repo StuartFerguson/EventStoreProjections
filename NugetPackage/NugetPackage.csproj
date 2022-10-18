@@ -21,12 +21,6 @@
     <Content Include="projections\continuous\MerchantAggregator.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="projections\continuous\MerchantBalanceCalculator.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="projections\\continuous\TransactionEnricher.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
