@@ -24,7 +24,7 @@
     <Content Include="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-	<Content Include="NugetPackage.targets" PackagePath="build/NugetPackage.targets" />
+	<Content Include="NugetPackage.targets" PackagePath="build/EventStoreProjections.targets" />
 	<Content Include="projections/**/*.*" Pack="true" PackagePath="lib/net6.0/projections">
 		<PackageCopyToOutput>true</PackageCopyToOutput>
 	</Content>

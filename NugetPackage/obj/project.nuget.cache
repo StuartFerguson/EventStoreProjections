@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "FqjZJVYmmQmMDqXqK1tagvc2hViPsZyBNRHpRjGkAS2xLgCA+n67XTXSG9cCjPBD4vAx+9hob7DOsYpB1f+bFg==",
+  "dgSpecHash": "KbjJ6b/Y+kTy1GKsVWpr7Z3DDcY3Fx1ElosAQ1kHqJTgRiQCXFzRulAKCOqka9t8HA4vmisX5vbm1ENdIq+C8Q==",
   "success": true,
   "projectFilePath": "C:\\Projects\\TransactionProcessing\\EventStoreProjections\\NugetPackage\\NugetPackage.csproj",
   "expectedPackageFiles": [],
