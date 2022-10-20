@@ -4,7 +4,7 @@
     <Files Include="$(MSBuildThisFileDirectory)/../lib/net6.0/projections/**/*.*" />
   </ItemGroup>
   <Target Name="CopyFiles" AfterTargets="Build">
-    <Copy SourceFiles="@(Files)" DestinationFolder="$(TargetDir)/projections/**/%(RecursiveDir)" />
+    <Copy SourceFiles="@(Files)" DestinationFolder="$(TargetDir)/projections/%(RecursiveDir)" />
   </Target>
 
 </Project>
