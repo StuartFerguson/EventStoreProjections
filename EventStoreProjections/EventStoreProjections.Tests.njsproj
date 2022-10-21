@@ -43,6 +43,7 @@
     <Content Include="tests\EstateAggregatorTests.js" />
     <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js" />
     <Content Include="tests\FileProcessorSubscriptionStreamBuilderTests.js" />
+    <Content Include="tests\MerchantBalanceAggregatorTests.js" />
     <Content Include="tests\MerchantAggregatorTests.js" />
     <Content Include="tests\TestData.js" />
     <Content Include="tests\TransactionProcessorSubscriptionStreamBuilderTests.js" />
