@@ -24,7 +24,7 @@
     <Content Include="projections\continuous\TransactionProcessorSubscriptionStreamBuilder.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-	  <Content Update="projections\continuous\MerchantBalanceAggregator.js">
+	  <Content Include="projections\continuous\MerchantBalanceAggregator.js">
 		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	<Content Include="NugetPackage.targets" PackagePath="build/EventStoreProjections.targets" />
