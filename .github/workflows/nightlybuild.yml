@@ -3,6 +3,7 @@ name: Nightly Build
 on:
   schedule:
   - cron: "45 23 * * *"
+  repository_dispatch:
 
 env:
   NODE_VERSION: '12.x'                # set this to the node version to use
