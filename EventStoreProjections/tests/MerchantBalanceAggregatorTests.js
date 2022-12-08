@@ -24,6 +24,9 @@ test('Projection Can Handle Merchant Events',
         var automaticDepositMadeEvent =
             testData.getAutomaticDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
 
+        var withdrawalMadeEvent =
+            testData.getWithdrawalMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
         projection.processEvent(
             'MerchantAggregate-' + merchantId.replace(/-/gi, ""),
             merchantCreatedEvent.eventType,
@@ -39,8 +42,13 @@ test('Projection Can Handle Merchant Events',
             automaticDepositMadeEvent.eventType,
             automaticDepositMadeEvent.data);
 
+        projection.processEvent(
+            'MerchantAggregate-' + merchantId.replace(/-/gi, ""),
+            withdrawalMadeEvent.eventType,
+            withdrawalMadeEvent.data);
+
         var events = projection.emittedEvents;
-        t.equal(events.length, 3);
+        t.equal(events.length, 4);
         t.end();
     });
 

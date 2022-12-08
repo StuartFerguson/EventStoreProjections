@@ -25,20 +25,30 @@ getMerchantId = function (e) {
     return e.data.merchantId;
 };
 
+isEventSupported = function (e) {
+    if (e.eventType == "MerchantCreatedEvent" ||
+        e.eventType === "ManualDepositMadeEvent" ||
+        e.eventType === "AutomaticDepositMadeEvent" ||
+        e.eventType === "TransactionHasStartedEvent" ||
+        e.eventType === "TransactionHasBeenCompletedEvent" ||
+        e.eventType === "MerchantFeeAddedToTransactionEvent" ||
+        e.eventType === "WithdrawalMadeEvent") {
+        return true;
+    }
+    return false;
+}
+
 fromAll()
     .when({
         $any: function (s, e) {
             if (isValidEvent(e)) {
                 var merchantId = getMerchantId(e);
                 if (merchantId !== null) {
-                    if (e.eventType == "MerchantCreatedEvent" ||
-                        e.eventType === "ManualDepositMadeEvent" ||
-                        e.eventType === "AutomaticDepositMadeEvent" ||
-                        e.eventType === "TransactionHasStartedEvent" ||
-                        e.eventType === "TransactionHasBeenCompletedEvent" ||
-                        e.eventType === "MerchantFeeAddedToTransactionEvent") {
-                        var streamName = "MerchantBalanceArchive-" + merchantId.replace(/-/gi, "");
-                        linkTo(streamName, e);
+                    {
+                        if (isEventSupported(e)) {
+                            var streamName = "MerchantBalanceArchive-" + merchantId.replace(/-/gi, "");
+                            linkTo(streamName, e);
+                        }
                     }
                 }
             }

@@ -198,6 +198,22 @@ module.exports = {
         }
     },
 
+    getWithdrawalMadeEvent: function (estateId, merchantId, withdrawalDateTime, withdrawalAmount) {
+        return {
+            eventType: 'WithdrawalMadeEvent',
+            data: {
+                "amount": withdrawalAmount,
+                "withdrawalDateTime": withdrawalDateTime,
+                "withdrawalId": "ff106578-8495-afe1-1e50-6889d76065a6",
+                "estateId": estateId,
+                "merchantId": merchantId
+            },
+            metadata: {
+            },
+            eventId: "4772BD21-BB70-4F46-9360-F9A6FE04C640"
+        }
+    },
+
     getTransactionHasStartedEvent: function(estateId, merchantId, transactionId, transactionAmount, transactionType)
     {
         return {
