@@ -14,8 +14,7 @@
         "outputPath": "C:\\Projects\\TransactionProcessing\\EventStoreProjections\\NugetPackage\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
           "C:\\Users\\stuar\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -26,9 +25,12 @@
           "net6.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {},
-          "https://www.myget.org/F/transactionprocessing/api/v3/index.json": {},
+          "https://f.feedz.io/transactionprocessing/nugets/nuget/index.json": {},
+          "https://www.myget.org/F/tahoe-eposity/auth/024ff48c-540a-4059-8712-d54f7b0d6a31/api/v3/index.json": {},
+          "https://www.myget.org/F/vme-intellistore-beta/auth/024ff48c-540a-4059-8712-d54f7b0d6a31/api/v3/index.json": {},
           "https://www.myget.org/F/vme-intellistore/auth/024ff48c-540a-4059-8712-d54f7b0d6a31/api/v3/index.json": {},
           "https://www.myget.org/F/vme-shared/auth/024ff48c-540a-4059-8712-d54f7b0d6a31/api/v3/index.json": {}
         },
@@ -63,7 +65,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400-preview.23330.10\\RuntimeIdentifierGraph.json"
         }
       }
     }
