@@ -31,7 +31,7 @@ isEventSupported = function (e) {
         e.eventType === "AutomaticDepositMadeEvent" ||
         e.eventType === "TransactionHasStartedEvent" ||
         e.eventType === "TransactionHasBeenCompletedEvent" ||
-        e.eventType === "MerchantFeeAddedToTransactionEvent" ||
+        e.eventType === "SettledMerchantFeeAddedToTransactionEvent" ||
         e.eventType === "WithdrawalMadeEvent") {
         return true;
     }
