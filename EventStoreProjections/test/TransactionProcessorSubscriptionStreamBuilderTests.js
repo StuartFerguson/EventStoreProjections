@@ -1,12 +1,12 @@
+var testData = require('./TestData.js');
+testData.clearRequireCache();
+
 require('../../NugetPackage/projections/continuous/TransactionProcessorSubscriptionStreamBuilder.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
-var testData = require('./TestData.js');
-var describe = require('tape-describe');
-var test = describe('Transaction Processor Subscription Stream Builder Tests');
+var chai = require("chai");
 
-test('Projection Can Handle Estate Created Event',
-    t =>
-    {
+describe('Transaction Processor Subscription Stream Builder Tests', function () {
+    it('Projection Can Handle Estate Created Event', function(){
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -24,16 +24,13 @@ test('Projection Can Handle Estate Created Event',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates[estateId], null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
-        t.end();
-    });
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
+    })
 
-test('Projection Can Handle Transaction Events',
-    t =>
-    {
+    it('Projection Can Handle Transaction Events', function(){
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -68,14 +65,27 @@ test('Projection Can Handle Transaction Events',
             transactionHasBeenCompletedEvent.eventType,
             transactionHasBeenCompletedEvent.data);
 
+        var calculatedValue = 5.00;
+        var eventCreatedDateTime = "2020-05-16T07:47:51.6617562+00:00";
+        var settledMerchantFeeAddedToTransactionEvent = testData.getSettledMerchantFeeAddedToTransactionEvent(estateId,
+                merchantId,
+                transactionId,
+                calculatedValue,
+                eventCreatedDateTime);
+        
+        projection.processEvent(
+            'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
+            settledMerchantFeeAddedToTransactionEvent.eventType,
+            settledMerchantFeeAddedToTransactionEvent.data);
+
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates[estateId], null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 2);
-        t.end();
-    });
+        chai.expect(events.length).equal(3);
+    })
+})

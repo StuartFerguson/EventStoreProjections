@@ -1,0 +1,2 @@
+always-auth=true
+@transactionprocessing:registry=https://www.myget.org/F/transactionprocessingnpm/npm/

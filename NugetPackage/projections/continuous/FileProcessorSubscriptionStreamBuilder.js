@@ -8,23 +8,8 @@ isAnEstateCreatedEvent = (e) => { return compareEventTypeSafely(e.eventType, 'Es
 compareEventTypeSafely = (sourceEventType, targetEventType) => { return (sourceEventType.toUpperCase() === targetEventType.toUpperCase()); }
 isInvalidEvent = (e) => (e === null || e === undefined || e.data === undefined);
 
-getSupportedEventTypes = function () {
-    var eventTypes = [];
-
-    eventTypes.push('ImportLogCreatedEvent');
-    eventTypes.push('FileAddedToImportLogEvent');
-    eventTypes.push('FileCreatedEvent');
-    eventTypes.push('FileLineAddedEvent');
-    eventTypes.push('FileLineProcessingSuccessfulEvent');
-    eventTypes.push('FileLineProcessingIgnoredEvent');
-    eventTypes.push('FileLineProcessingFailedEvent');
-    eventTypes.push('FileProcessingCompletedEvent');
-
-    return eventTypes;
-}
-
-isARequiredEvent = (e) => {
-    var supportedEvents = getSupportedEventTypes();
+isARequiredEvent = (e, eventTypes) => {
+    var supportedEvents = eventTypes;
 
     var index = supportedEvents.indexOf(e.eventType);
 
@@ -63,7 +48,18 @@ fromAll()
                     };
                 }
 
-                if (isARequiredEvent(e) === false) return;
+				var eventTypes = [];
+
+				eventTypes.push('ImportLogCreatedEvent');
+				eventTypes.push('FileAddedToImportLogEvent');
+				eventTypes.push('FileCreatedEvent');
+				eventTypes.push('FileLineAddedEvent');
+				eventTypes.push('FileLineProcessingSuccessfulEvent');
+				eventTypes.push('FileLineProcessingIgnoredEvent');
+				eventTypes.push('FileLineProcessingFailedEvent');
+    			eventTypes.push('FileProcessingCompletedEvent');
+
+                if (isARequiredEvent(e,eventTypes) === false) return;
 
                 linkTo(getStreamName(s.estates[e.data.estateId].name), e);
             }

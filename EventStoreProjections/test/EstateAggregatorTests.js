@@ -1,14 +1,14 @@
+var testData = require('./TestData.js');
+testData.clearRequireCache();
+
 require('../../NugetPackage/projections/continuous/EstateAggregator.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
-var testData = require('./TestData.js');
-var describe = require('tape-describe');
-var test = describe('Estate Aggregator Tests');
+var chai = require("chai");
 
-test('Projection Can Handle Estate Events',
-    t =>
-    {
+describe('Estate Aggregator Tests', function () {
+    it('Projection Can Handle Estate Events', function(){        
         projection.initialize();
-
+       
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
         var estateName = 'Demo Estate 1';
         var securityUserId = 'e41e6196-4f18-4f49-bab4-ead032c1e52e';
@@ -40,15 +40,12 @@ test('Projection Can Handle Estate Events',
             operatorAddedToEstateEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(3, events.length);
+        chai.expect(events.length).equal(3);
         var state = projection.getState();
-        t.equal(state.estates[estateId].name, 'DemoEstate1');
-        t.end();
-    });
+        chai.expect(state.estates[estateId].name).equal('DemoEstate1');
+    })
 
-test('Projection Can Handle Merchant Events',
-    t =>
-    {
+    it('Projection Can Handle Merchant Events', function() {
         projection.initialize();
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
@@ -124,13 +121,10 @@ test('Projection Can Handle Merchant Events',
             manualDepositMadeEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 8);
-        t.end();
-    });
+        chai.expect(events.length).equal(8);
+    })
 
-test('Projection Can Handle Contract Events',
-    t =>
-    {
+    it('Projection Can Handle Contract Events', function() {
         projection.initialize();
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
@@ -203,13 +197,10 @@ test('Projection Can Handle Contract Events',
             transactionFeeForProductAddedToContractEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 5);
-        t.end();
-    });
+        chai.expect(events.length).equal(5);
+    })
 
-test('Projection Can Handle Transaction Events',
-    t =>
-    {
+    it('Projection Can Handle Transaction Events', function() {
         projection.initialize();
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
@@ -262,21 +253,11 @@ test('Projection Can Handle Transaction Events',
                 transactionId,
                 true,
                 transactionAmount);
-        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId,
-            merchantId,
-            transactionId,
-            calculatedFeeValue,
-            feeEventCreatedDateTime);
-
-        var merchantFeeAddedToTransactionEnrichedEvent = testData.getMerchantFeeAddedToTransactionEnrichedEvent(
-            estateId,
-            merchantId,
-            transactionId,
-            feeId,
-            feeEventCreatedDateTime,
-            feeValue,
-            calculatedFeeValue);
-
+        var settledMerchantFeeAddedToTransactionEvent = testData.getSettledMerchantFeeAddedToTransactionEvent(estateId,
+                merchantId,
+                    transactionId,
+                    calculatedFeeValue,
+                    feeEventCreatedDateTime);
 
         projection.processEvent(
             'EstateAggregate-' + estateId.replace(/-/gi, ""),
@@ -318,23 +299,15 @@ test('Projection Can Handle Transaction Events',
             transactionHasBeenCompletedEvent.eventType,
             transactionHasBeenCompletedEvent.data);
 
-        // This event will not be emitted
         projection.processEvent('TransactionAggregate-' + transactionId.replace(/-/gi, ""),
-            merchantFeeAddedToTransactionEvent.eventType,
-            merchantFeeAddedToTransactionEvent.data);
-
-        projection.processEvent("TransactionEnricherResult",
-            merchantFeeAddedToTransactionEnrichedEvent.eventType,
-            merchantFeeAddedToTransactionEnrichedEvent.data);
+            settledMerchantFeeAddedToTransactionEvent.eventType,
+            settledMerchantFeeAddedToTransactionEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 10);
-        t.end();
-    });
+        chai.expect(events.length).equal(10);
+    })
 
-test('Projection Can Handle Voucher Events',
-    t =>
-    {
+    it('Projection Can Handle Voucher Events', function(){
         projection.initialize();
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
@@ -374,13 +347,10 @@ test('Projection Can Handle Voucher Events',
             voucherIssuedEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 4);
-        t.end();
-    });
+        chai.expect(events.length).equal(4);
+    })
 
-test('Projection Can Handle File Events',
-    t =>
-    {
+    it('Projection Can Handle File Events', function(){
         projection.initialize();
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
         var estateName = 'Demo Estate';
@@ -452,7 +422,9 @@ test('Projection Can Handle File Events',
             fileProcessingCompletedEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 9);
-        t.end();
-    });
+        chai.expect(events.length).equal(9);
+    })
+})
+
+// TODO: Settlement Events Tests
 // TODO: Messaging Events Tests

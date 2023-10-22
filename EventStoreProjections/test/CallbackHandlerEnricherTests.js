@@ -1,12 +1,11 @@
+var testData = require('./TestData.js');
+testData.clearRequireCache();
+
 require('../../NugetPackage/projections/continuous/CallbackHandlerEnricher.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
-var testData = require('./TestData.js');
-var describe = require('tape-describe');
-var test = describe('Callback Handler Enricher Tests');
-
-test('Projection Can Handle Estate Events',
-    t =>
-    {
+var chai = require("chai");
+describe('Callback Handler Enricher Tests', function () {
+    it('Projection Can Handle Estate Events', function(){
         projection.initialize();
 
         projection.setState({
@@ -33,18 +32,14 @@ test('Projection Can Handle Estate Events',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates, null);
-        t.equal(projectionState.estates.length, 1);
-        t.equal(projectionState.estates[0].estateId, estateId);
-        t.equal(projectionState.estates[0].reference, reference);
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates).to.not.be.null;
+        chai.expect(projectionState.estates.length).equal(1);
+        chai.expect(projectionState.estates[0].estateId).equal(estateId);
+        chai.expect(projectionState.estates[0].reference).equal(reference);
+    })
 
-        t.end();
-    });
-
-test('Projection Can Handle Callback Received Event after Estate Created',
-    t =>
-    {
+    it('Projection Can Handle Callback Received Event after Estate Created', function() {
         projection.initialize();
 
         projection.setState({
@@ -71,9 +66,9 @@ test('Projection Can Handle Callback Received Event after Estate Created',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates, null);
-        t.equal(projectionState.estates.length, 1);
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates).to.not.be.null;
+        chai.expect(projectionState.estates.length).equal(1);
 
         var destination = "EstateManagement";
         var estateReference = "1";
@@ -86,19 +81,15 @@ test('Projection Can Handle Callback Received Event after Estate Created',
             callbackReceivedEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 1);
+        chai.expect(events.length).equal(1);
 
         var eventBody = JSON.parse(events[0].body);
-        t.equal(eventBody.estateId, estateId);
-        t.equal(events[0].streamId, destination + "SubscriptionStream_" + estateName.replace(" ", ""));
-        t.equal(events[0].eventName, "CallbackReceivedEnrichedEvent");
+        chai.expect(eventBody.estateId).equal(estateId);
+        chai.expect(events[0].streamId).equal(destination + "SubscriptionStream_" + estateName.replace(" ", ""));
+        chai.expect(events[0].eventName).equal("CallbackReceivedEnrichedEvent");
+    })
 
-        t.end();
-    });
-
-test('Projection Can Handle Callback Received Event before Estate Created',
-    t =>
-    {
+    it('Projection Can Handle Callback Received Event before Estate Created', function(){
         projection.initialize();
 
         projection.setState({
@@ -118,11 +109,11 @@ test('Projection Can Handle Callback Received Event before Estate Created',
             callbackReceivedEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 1);
+        chai.expect(events.length).equal(1);
         var eventBody = JSON.parse(events[0].body);
 
-        t.equal(eventBody.estateId, undefined);
-        t.equal(events[0].streamId, destination + "SubscriptionStream_UnknownEstate");
-        t.equal(events[0].eventName, "CallbackReceivedEnrichedWithNoEstateEvent");
-        t.end();
-    });
+        chai.expect(eventBody.estateId).equal(undefined);
+        chai.expect(events[0].streamId).equal(destination + "SubscriptionStream_UnknownEstate");
+        chai.expect(events[0].eventName).equal("CallbackReceivedEnrichedWithNoEstateEvent");
+    })
+});

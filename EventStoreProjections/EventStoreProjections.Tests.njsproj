@@ -36,9 +36,11 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="libman.json" />
-    <Content Include="tests\CallbackHandlerEnricherTests.js">
+    <Compile Include="tests\CallbackHandlerEnricherTests.js">
       <SubType>Code</SubType>
-    </Content>
+      <TestFramework>mocha</TestFramework>
+      <Publish>True</Publish>
+    </Compile>
     <Content Include="package.json" />
     <Content Include="tests\EstateAggregatorTests.js" />
     <Content Include="tests\EstateManagementSubscriptionStreamBuilderTests.js" />
