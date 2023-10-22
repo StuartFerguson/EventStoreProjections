@@ -1,7 +1,7 @@
 {
   "name": "event-store-projections.tests",
   "version": "0.0.0",
-  "description": "Tests for Javascript Projections",
+  "description": "EventStoreProjections.Tests",
   "main": "app.js",
   "author": {
     "name": ""
@@ -12,6 +12,6 @@
     "mocha": "^10.2.0"
   },
   "scripts": {
-    "test": "mocha --full-trace 'test/*.js' --recursive"    
+    "test": "mocha --full-trace 'test/*.js' --recursive"
   }
 }
