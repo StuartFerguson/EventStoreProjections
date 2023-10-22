@@ -1,12 +1,12 @@
+var testData = require('./TestData.js');
+testData.clearRequireCache();
+
 require('../../NugetPackage/projections/continuous/MerchantAggregator.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
-var testData = require('./TestData.js');
-var describe = require('tape-describe');
-var test = describe('Merchant Aggregator Tests');
+var chai = require("chai");
 
-test('Projection Can Handle Merchant Events',
-    t =>
-    {
+describe('Merchant Aggregator Tests', function () {
+    it('Projection Can Handle Merchant Events', function(){
         projection.initialize();
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
@@ -74,13 +74,10 @@ test('Projection Can Handle Merchant Events',
             manualDepositMadeEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 7);
-        t.end();
-    });
+        chai.expect(events.length).equal(7);
+    })
 
-test('Projection Can Handle Transaction Events',
-    t =>
-    {
+    it('Projection Can Handle Transaction Events', function(){
         projection.initialize();
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
@@ -129,11 +126,11 @@ test('Projection Can Handle Transaction Events',
 
         var calculatedValue = 5.00;
         var eventCreatedDateTime = "2020-05-16T07:47:51.6617562+00:00";
-        var merchantFeeAddedToTransactionEvent = testData.getMerchantFeeAddedToTransactionEvent(estateId,
-            merchantId,
-            transactionId,
-            calculatedValue,
-            eventCreatedDateTime);
+        var settledMerchantFeeAddedToTransactionEvent = testData.getSettledMerchantFeeAddedToTransactionEvent(estateId,
+                merchantId,
+                transactionId,
+                calculatedValue,
+                eventCreatedDateTime);
 
         projection.processEvent(
             'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
@@ -177,10 +174,10 @@ test('Projection Can Handle Transaction Events',
 
         projection.processEvent(
             'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
-            merchantFeeAddedToTransactionEvent.eventType,
-            merchantFeeAddedToTransactionEvent.data);
+            settledMerchantFeeAddedToTransactionEvent.eventType,
+            settledMerchantFeeAddedToTransactionEvent.data);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 9);
-        t.end();
-    });
+        chai.expect(events.length).equal(9);
+    })
+});

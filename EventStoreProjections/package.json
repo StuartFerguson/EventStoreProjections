@@ -1,20 +1,17 @@
 {
   "name": "event-store-projections.tests",
   "version": "0.0.0",
-  "description": "EventStoreProjections.Tests",
+  "description": "Tests for Javascript Projections",
   "main": "app.js",
   "author": {
     "name": ""
   },
   "dependencies": {
-    "@small-tech/esm-tape-runner": "1.0.3",
     "@transactionprocessing/esprojection-testing-framework": "1.0.1",
-    "mocha": "^10.0.0",
-    "tape": "5.3.2",
-    "tape-describe": "1.0.3"
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0"
   },
   "scripts": {
-    "run": "node app.js",
-    "test": "esm-tape-runner tests/**/*.js"
+    "test": "mocha --full-trace 'test/*.js' --recursive"    
   }
 }

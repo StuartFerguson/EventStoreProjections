@@ -8,22 +8,12 @@ isAnEstateCreatedEvent = (e) => { return compareEventTypeSafely(e.eventType, 'Es
 compareEventTypeSafely = (sourceEventType, targetEventType) => { return (sourceEventType.toUpperCase() === targetEventType.toUpperCase()); }
 isInvalidEvent = (e) => (e === null || e === undefined || e.data === undefined);
 
-getSupportedEventTypes = function () {
-    var eventTypes = [];
-
-    eventTypes.push('TransactionHasBeenCompletedEvent');
-    eventTypes.push('MerchantFeeSettledEvent');
-    eventTypes.push('StatementGeneratedEvent');
-
-    return eventTypes;
-}
-
-isARequiredEvent = (e) => {
-    var supportedEvents = getSupportedEventTypes();
+isARequiredEvent = (e, eventTypes) => {
+    var supportedEvents = eventTypes;
 
     var index = supportedEvents.indexOf(e.eventType);
 
-    return index !== -1;
+    return index !== -1
 };
 
 isTruncated = function (metadata) {
@@ -58,11 +48,17 @@ fromAll()
                         name: getStringWithNoSpaces(e.data.estateName)
                     };
                 }
+                
+                var eventTypes = [];
+    
+                eventTypes.push('TransactionHasBeenCompletedEvent');
+                eventTypes.push('MerchantFeeSettledEvent');
+                eventTypes.push('StatementGeneratedEvent');
 
-                if (isARequiredEvent(e) === false) return;
-
+                if (isARequiredEvent(e, eventTypes) === false) return;
+                
                 linkTo(getStreamName(s.estates[e.data.estateId].name), e);
             }
         }
     }
-    );
+);

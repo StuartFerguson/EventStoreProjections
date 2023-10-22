@@ -8,23 +8,12 @@ isAnEstateCreatedEvent = (e) => { return compareEventTypeSafely(e.eventType, 'Es
 compareEventTypeSafely = (sourceEventType, targetEventType) => { return (sourceEventType.toUpperCase() === targetEventType.toUpperCase()); }
 isInvalidEvent = (e) => (e === null || e === undefined || e.data === undefined);
 
-getSupportedEventTypes = function () {
-    var eventTypes = [];
-
-    eventTypes.push('CustomerEmailReceiptRequestedEvent');
-    eventTypes.push('TransactionHasBeenCompletedEvent');
-    eventTypes.push('MerchantFeePendingSettlementAddedToTransactionEvent');
-    eventTypes.push('SettledMerchantFeeAddedToTransactionEvent');
-
-    return eventTypes;
-}
-
-isARequiredEvent = (e) => {
-    var supportedEvents = getSupportedEventTypes();
+isARequiredEvent = (e, eventTypes) => {
+    var supportedEvents = eventTypes;
 
     var index = supportedEvents.indexOf(e.eventType);
 
-    return index !== -1;
+    return index !== -1
 };
 
 isTruncated = function (metadata) {
@@ -59,7 +48,14 @@ fromAll()
                     };
                 }
 
-                if (isARequiredEvent(e) === false) return;
+				var eventTypes = [];
+
+			    eventTypes.push('CustomerEmailReceiptRequestedEvent');
+			    eventTypes.push('TransactionHasBeenCompletedEvent');
+			    eventTypes.push('MerchantFeePendingSettlementAddedToTransactionEvent');
+			    eventTypes.push('SettledMerchantFeeAddedToTransactionEvent');
+
+                if (isARequiredEvent(e, eventTypes) === false) return;
 
                 linkTo(getStreamName(s.estates[e.data.estateId].name), e);
             }

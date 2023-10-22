@@ -364,19 +364,19 @@ module.exports = {
         }
     },
     
-    getMerchantFeeAddedToTransactionEvent: function (estateId, merchantId, transactionId, calculatedValue, feeEventCreatedDateTime)
+    getSettledMerchantFeeAddedToTransactionEvent: function (estateId, merchantId, transactionId, calculatedValue, feeEventCreatedDateTime)
     {
         return {
-            eventType: 'MerchantFeeAddedToTransactionEvent',
+            eventType: 'SettledMerchantFeeAddedToTransactionEvent',
             data: {
                 "calculatedValue": calculatedValue,
+                "feeCalculatedDateTime": feeEventCreatedDateTime,
+                "settledDateTime": "2023-10-21T00:00:00Z",
                 "estateId": estateId,
-                "feeCalculationType": 0,
                 "feeId": "cd858cbd-fafd-4f66-9eea-52c6ab1e5832",
                 "feeValue": 0.5,
                 "merchantId": merchantId,
                 "transactionId": transactionId,
-                "feeCalculatedDateTime": feeEventCreatedDateTime
             },
             eventId:"290D1C47-86F0-496C-9567-8133066654F1"
         }
@@ -446,25 +446,6 @@ module.exports = {
             metadata: {
             },
             eventId:"D76CE0D1-56AF-49E1-817D-67941AE97205"
-        }
-    },
-
-    getMerchantFeeAddedToTransactionEnrichedEvent: function (estateId, merchantId, transactionId, feeId, feeCalculatedDateTime, feeValue, calculatedValue){
-        return {
-            eventType: 'MerchantFeeAddedToTransactionEnrichedEvent',
-            data: {
-                "calculatedValue": calculatedValue,
-                "feeCalculatedDateTime": feeCalculatedDateTime,
-                "estateId": estateId,
-                "feeId": feeId,
-                "feeValue": feeValue,
-                "merchantId": merchantId,
-                "transactionId": transactionId,
-                "eventId": "562f99ed-75b5-5b04-95e1-52d12c0433c0"
-            },
-            metadata: {
-            },
-            eventId:"AECA5F32-A8A1-4B68-BBF3-389A1C825D59"
         }
     },
 
@@ -716,5 +697,11 @@ module.exports = {
 
             }
         }
+    },
+
+    clearRequireCache: function clearRequireCache() {
+        Object.keys(require.cache).forEach(function (key) {
+            delete require.cache[key];
+        });
     }
 };

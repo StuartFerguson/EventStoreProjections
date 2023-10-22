@@ -1,12 +1,12 @@
+var testData = require('./TestData.js');
+testData.clearRequireCache();
+
 require('../../NugetPackage/projections/continuous/FileProcessorSubscriptionStreamBuilder.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
-var testData = require('./TestData.js');
-var describe = require('tape-describe');
-var test = describe('File Processor Subscription Stream Builder Tests');
+var chai = require("chai");
 
-test('Projection Can Handle Estate Created Event',
-    t =>
-    {
+describe('File Processor Subscription Stream Builder Tests', function () {
+    it('Projection Can Handle Estate Created Event', function(){   
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -24,16 +24,13 @@ test('Projection Can Handle Estate Created Event',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState, null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
-        t.end();
-    });
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
+    })
 
-test('Projection Can Handle File Events',
-    t =>
-    {
+    it('Projection Can Handle File Events', function(){
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -131,12 +128,12 @@ test('Projection Can Handle File Events',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState, null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 10);
-        t.end();
-    });
+        chai.expect(events.length).equal(10);
+    })
+});

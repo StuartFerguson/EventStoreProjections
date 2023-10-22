@@ -1,12 +1,12 @@
+var testData = require('./TestData.js');
+testData.clearRequireCache();
+
 require('../../NugetPackage/projections/continuous/EstateManagementSubscriptionStreamBuilder.js');
 var projection = require('@transactionprocessing/esprojection-testing-framework');
-var testData = require('./TestData.js');
-var describe = require('tape-describe');
-var test = describe('Estate Management Subscription Stream Builder Tests');
+var chai = require("chai");
 
-test('Projection Can Handle Estate Created Event',
-    t =>
-    {
+describe('Estate Management Subscription Stream Builder Tests', function () {
+    it('Projection Can Handle Estate Created Event', function(){
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -24,19 +24,16 @@ test('Projection Can Handle Estate Created Event',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates[estateId], null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
-        t.end();
-    });
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
+    })
 
-test('Projection Can Handle Transaction Has Been Completed Events',
-    t =>
-    {
+    it('Projection Can Handle Transaction Has Been Completed Events', function(){
         projection.initialize();
 
-        projection.setState({ estates: {} });
+        projection.setState({ estates: {}, events:0 });
 
         var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
         var estateName = 'Demo Estate';
@@ -53,7 +50,7 @@ test('Projection Can Handle Transaction Has Been Completed Events',
 
         var transactionHasBeenCompletedEvent =
             testData.getTransactionHasBeenCompletedEvent(estateId, merchantId, transactionId, true, 100.00);
-
+        
         projection.processEvent(
             'TransactionAggregate-' + transactionId.replace(/-/gi, ""),
             transactionHasBeenCompletedEvent.eventType,
@@ -61,19 +58,16 @@ test('Projection Can Handle Transaction Has Been Completed Events',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates[estateId], null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
-
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
+                
         var events = projection.emittedEvents;
-        t.equal(events.length, 1);
-        t.end();
-    });
+        chai.expect(events.length).equal(1);
+    })
 
-test('Projection Can Handle Merchant Fee Settled Events',
-    t =>
-    {
+    it('Projection Can Handle Merchant Fee Settled Events', function(){        
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -102,19 +96,16 @@ test('Projection Can Handle Merchant Fee Settled Events',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates[estateId], null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 1);
-        t.end();
-    });
+        chai.expect(events.length).equal(1);
+    })
 
-test('Projection Can Handle Statement Generated Events',
-    t =>
-    {
+    it('Projection Can Handle Statement Generated Events', function(){
         projection.initialize();
 
         projection.setState({ estates: {} });
@@ -142,12 +133,12 @@ test('Projection Can Handle Statement Generated Events',
 
         var projectionState = projection.getState();
 
-        t.notEqual(projectionState, null);
-        t.notEqual(projectionState.estates[estateId], null);
-        t.equal(projectionState.estates[estateId].name, estateNameNoSpaces);
-        t.equal(projectionState.estates[estateId].filteredName, estateName);
+        chai.expect(projectionState).to.not.be.null;
+        chai.expect(projectionState.estates[estateId]).to.not.be.null;
+        chai.expect(projectionState.estates[estateId].name).equal(estateNameNoSpaces);
+        chai.expect(projectionState.estates[estateId].filteredName).equal(estateName);
 
         var events = projection.emittedEvents;
-        t.equal(events.length, 1);
-        t.end();
-    });
+        chai.expect(events.length).equal(1);
+    })
+});
