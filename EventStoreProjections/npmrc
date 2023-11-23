@@ -1,2 +1,0 @@
-always-auth=true
-@transactionprocessing:registry=https://f.feedz.io/transactionprocessing/nugets/npm
