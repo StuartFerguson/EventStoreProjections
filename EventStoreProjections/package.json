@@ -9,7 +9,7 @@
   "dependencies": {
     "@transactionprocessing/esprojection-testing-framework": "1.0.1",
     "chai": "^4.3.10",
-    "mocha": "^10.2.0"
+    "mocha": "^10.2.0" 
   },
   "scripts": {
     "test": "mocha --full-trace 'test/*.js' --recursive"
