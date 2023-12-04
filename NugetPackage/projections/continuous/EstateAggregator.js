@@ -1,6 +1,6 @@
 //starttestsetup
-var fromAll = fromAll || require("../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework").scope.fromAll;
-var linkTo = linkTo || require("../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework").scope.linkTo;
+var fromAll = fromAll || require("../../../EventStoreProjections/node_modules/event-store-projection-testing-framework").scope.fromAll;
+var linkTo = linkTo || require("../../../EventStoreProjections/node_modules/event-store-projection-testing-framework").scope.linkTo;
 //endtestsetup
 
 isEstateEvent = (e) => { return (e.data && e.data.estateId); }

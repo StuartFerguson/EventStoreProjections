@@ -1,6 +1,6 @@
 //starttestsetup
-var fromStreams = fromStreams || require('../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework').scope.fromStreams;
-var emit = emit || require('../../../EventStoreProjections/node_modules/@transactionprocessing/esprojection-testing-framework').scope.emit;
+var fromStreams = fromStreams || require('../../../EventStoreProjections/node_modules/event-store-projection-testing-framework').scope.fromStreams;
+var emit = emit || require('../../../EventStoreProjections/node_modules/event-store-projection-testing-framework').scope.emit;
 //endtestsetup
 
 fromStreams("$ce-EstateAggregate", "$et-CallbackReceivedEvent")
