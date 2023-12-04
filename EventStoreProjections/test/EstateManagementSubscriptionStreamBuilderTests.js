@@ -2,7 +2,7 @@ var testData = require('./TestData.js');
 testData.clearRequireCache();
 
 require('../../NugetPackage/projections/continuous/EstateManagementSubscriptionStreamBuilder.js');
-var projection = require('@transactionprocessing/esprojection-testing-framework');
+var projection = require('event-store-projection-testing-framework');
 var chai = require("chai");
 
 describe('Estate Management Subscription Stream Builder Tests', function () {

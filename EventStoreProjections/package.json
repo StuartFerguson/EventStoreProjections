@@ -7,7 +7,7 @@
     "name": ""
   },
   "dependencies": {
-    "@transactionprocessing/esprojection-testing-framework": "1.0.1",
+    "event-store-projection-testing-framework": "2023.12.1",
     "chai": "^4.3.10",
     "mocha": "^10.2.0" 
   },
