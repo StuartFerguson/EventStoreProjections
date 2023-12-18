@@ -6,6 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="projections\continuous\MerchantBalanceProjection.js">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="projections\continuous\CallbackHandlerEnricher.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
