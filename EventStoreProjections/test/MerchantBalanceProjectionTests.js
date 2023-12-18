@@ -233,6 +233,94 @@ describe('Merchant Balance Projection Tests', function () {
         chai.expect(merchant.balance).equal(initialBalance);
     })
 
+    it('Merchant doesnt exist', function(){
+        projection.initialize();
+
+        var estateId = '3bf2dab2-86d6-44e3-bcf8-51bec65cf8bc';
+        var merchantId = 'c4c33d75-f011-40e4-9d97-1f428ab563d8';
+
+        var depositDateTime = '2020-05-30T06:21:31.356Z';
+        var depositAmount = 1000.00;
+        var manualDepositMadeEvent =
+            testData.getManualDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
+        projection.processEvent("MerchantDepositListAggregate-c4c33d75-f011-40e4-9d97-1f428ab563d8", 
+        manualDepositMadeEvent.eventType,
+        manualDepositMadeEvent.data
+        );
+      
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchant;
+        chai.expect(merchant).equal(null);    
+
+        var depositDateTime = '2020-05-30T06:21:31.356Z';
+        var depositAmount = 1000.00;
+        var automaticDepositMadeEvent =
+            testData.getAutomaticDepositMadeEvent(estateId, merchantId, depositDateTime, depositAmount);
+
+        projection.processEvent("MerchantDepositListAggregate-c4c33d75-f011-40e4-9d97-1f428ab563d8", 
+        automaticDepositMadeEvent.eventType,
+        automaticDepositMadeEvent.data
+        );
+      
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchant;
+        chai.expect(merchant).equal(null);    
+      
+        var transactionId = 'c4c33d75-f011-40e4-9d97-1f428ab563d8';
+        var transactionAmount = 10.00;
+        var transactionCompletedDateTime = '2023-11-01'
+        var transactionHasBeenCompletedEvent =
+            testData.getTransactionHasBeenCompletedEvent(estateId, merchantId, transactionId, true, transactionAmount, transactionCompletedDateTime); 
+
+        projection.processEvent("TransactionAggregate-c4c33d75-f011-40e4-9d97-1f428ab563d8", 
+        transactionHasBeenCompletedEvent.eventType,
+        transactionHasBeenCompletedEvent.data
+            );
+
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchant;
+        chai.expect(merchant).equal(null);    
+
+        var transactionId = 'c4c33d75-f011-40e4-9d97-1f428ab563d8';
+        var calculatedValue = 5.00;
+        var eventCreatedDateTime = "2020-05-16T07:47:51.6617562+00:00";
+        var settledMerchantFeeAddedToTransactionEvent = testData.getSettledMerchantFeeAddedToTransactionEvent(estateId,
+            merchantId,
+            transactionId,
+            calculatedValue,
+            eventCreatedDateTime);
+
+        projection.processEvent(
+                'TransactionAggregate-c4c33d75-f011-40e4-9d97-1f428ab563d8',
+                settledMerchantFeeAddedToTransactionEvent.eventType,
+                settledMerchantFeeAddedToTransactionEvent.data);      
+
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchant;
+        chai.expect(merchant).equal(null);    
+
+        var withdrawalDateTime = "2020-05-16T07:47:51.6617562+00:00";
+        var withdrawalAmount= 50.00;
+
+        var withdrawalMadeEvent =
+            testData.getWithdrawalMadeEvent(estateId, merchantId, withdrawalDateTime, withdrawalAmount);
+
+        projection.processEvent(
+                'MerchantAggregate-c4c33d75-f011-40e4-9d97-1f428ab563d8',
+                withdrawalMadeEvent.eventType,
+                withdrawalMadeEvent.data);  
+
+        var projectionState = projection.getState();
+
+        var merchant = projectionState.merchant;
+        chai.expect(merchant).equal(null);    
+    })
+
     it('Settled Merchant Fee increments balance', function(){
         projection.initialize();
 
