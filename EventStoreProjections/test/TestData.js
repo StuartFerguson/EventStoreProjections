@@ -346,22 +346,30 @@ module.exports = {
 
     getTransactionHasBeenCompletedEvent: function (estateId, merchantId, transactionId, isAuthorised, transactionAmount, completedDateTime)
     {
-        return {
+        var event = 
+        {
             eventType: 'TransactionHasBeenCompletedEvent',
             data: {
                 "completedDateTime": completedDateTime,
-                "estateId": estateId,
-                "isAuthorised": isAuthorised,
+                "estateId": estateId,                
                 "transactionAmount": transactionAmount,
-                "merchantId": merchantId,
-                "responseCode": "0000",
-                "responseMessage": "SUCCESS",
+                "merchantId": merchantId,     
+                "responseCode": '1001',
+                "responseMessage": 'DECLINED',           
                 "transactionId": transactionId
             },
             metadata: {
             },
             eventId:"7F1FA1B5-449F-4F94-AF5C-5A536CBDAF57"
         }
+
+        if (isAuthorised){
+            event.data.isAuthorised = true;
+            event.data.responseCode = "0000";
+            event.data.responseMessage = "SUCCESS";
+        };
+        
+        return event;
     },
     
     getSettledMerchantFeeAddedToTransactionEvent: function (estateId, merchantId, transactionId, calculatedValue, feeEventCreatedDateTime)

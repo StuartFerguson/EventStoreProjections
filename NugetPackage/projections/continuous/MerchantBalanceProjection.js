@@ -39,8 +39,14 @@ function createMerchantState(merchantId, merchantName){
     return merchant;
 }
 
-function HandleMerchantCreatedEvent(s,e){
-    //var merchant = findMerchantInState(s,e.data.merchantId);
+function isMerchantValid(s){
+    if (s.merchant === null){
+       return false;     
+    }
+    return true;
+}
+
+function HandleMerchantCreatedEvent(s,e){    
     if (s.merchant === null){
         var newMerchantState = createMerchantState(e.data.merchantId, e.data.merchantName);        
         s.merchant = newMerchantState;
@@ -48,6 +54,8 @@ function HandleMerchantCreatedEvent(s,e){
 }
 
 function HandleDepositEvent(s,e){   
+    if (isMerchantValid(s) == false)
+        return;
     s.merchant.balance += e.data.amount;
     s.merchant.numberOfEventsProcessed++;
     s.merchant.deposits.count++;
@@ -56,6 +64,8 @@ function HandleDepositEvent(s,e){
 }
 
 function HandleWithdrawalMadeEvent(s,e){
+    if (isMerchantValid(s) == false)
+        return;
     s.merchant.balance -= e.data.amount;
     s.merchant.numberOfEventsProcessed++;
     s.merchant.withdrawals.count++;
@@ -64,6 +74,9 @@ function HandleWithdrawalMadeEvent(s,e){
 }
 
 function HandleTransactionHasBeenCompletedEvent(s,e){   
+    if (isMerchantValid(s) == false)
+        return;
+
     s.merchant.numberOfEventsProcessed++;
     
     // Filter out logons and reconciliations
@@ -83,6 +96,9 @@ function HandleTransactionHasBeenCompletedEvent(s,e){
 }
 
 function HandleSettledMerchantFeeAddedToTransactionEvent(s,e){   
+    if (isMerchantValid(s) == false)
+        return;
+    
     s.merchant.numberOfEventsProcessed++;    
     s.merchant.balance += e.data.calculatedValue;
     s.merchant.fees.count++;
