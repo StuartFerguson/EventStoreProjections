@@ -344,12 +344,12 @@ module.exports = {
         }
     },
 
-    getTransactionHasBeenCompletedEvent: function (estateId, merchantId, transactionId, isAuthorised, transactionAmount)
+    getTransactionHasBeenCompletedEvent: function (estateId, merchantId, transactionId, isAuthorised, transactionAmount, completedDateTime)
     {
         return {
             eventType: 'TransactionHasBeenCompletedEvent',
             data: {
-                "completedDateTime": "2021-03-18T08:36:13.365079Z",
+                "completedDateTime": completedDateTime,
                 "estateId": estateId,
                 "isAuthorised": isAuthorised,
                 "transactionAmount": transactionAmount,
