@@ -9,7 +9,7 @@
   "dependencies": {
     "event-store-projection-testing-framework": "2023.12.1",
     "chai": "^4.3.10",
-    "mocha": "^10.2.0" 
+    "mocha": "^10.8.2" 
   },
   "scripts": {
     "test": "mocha --full-trace 'test/*.js' --recursive"
